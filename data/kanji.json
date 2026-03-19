@@ -1,0 +1,72 @@
+[
+  {
+    "character": "憂",
+    "readings": { "on": ["ユウ"], "kun": ["うれ.える", "うれ.い", "う.い"] },
+    "meanings": ["melancholy", "grief", "distress"],
+    "strokes": 15,
+    "examples": ["憂鬱", "憂慮", "憂い"]
+  },
+  {
+    "character": "鬱",
+    "readings": { "on": ["ウツ"], "kun": [] },
+    "meanings": ["depression", "melancholy", "gloom"],
+    "strokes": 29,
+    "examples": ["憂鬱", "鬱病", "鬱蒼"]
+  },
+  {
+    "character": "醸",
+    "readings": { "on": ["ジョウ"], "kun": ["かも.す"] },
+    "meanings": ["brew", "ferment", "cause"],
+    "strokes": 20,
+    "examples": ["醸造", "醸成", "雰囲気を醸す"]
+  },
+  {
+    "character": "概",
+    "readings": { "on": ["ガイ"], "kun": ["おおむ.ね"] },
+    "meanings": ["approximation", "generally", "outline"],
+    "strokes": 14,
+    "examples": ["概念", "概要", "大概"]
+  },
+  {
+    "character": "慨",
+    "readings": { "on": ["ガイ"], "kun": ["なげ.く"] },
+    "meanings": ["rue", "lament", "indignation"],
+    "strokes": 13,
+    "examples": ["感慨", "慷慨", "憤慨"]
+  },
+  {
+    "character": "隔",
+    "readings": { "on": ["カク"], "kun": ["へだ.てる", "へだ.たる"] },
+    "meanings": ["isolate", "separate", "distance"],
+    "strokes": 13,
+    "examples": ["隔離", "間隔", "隔週"]
+  },
+  {
+    "character": "殊",
+    "readings": { "on": ["シュ"], "kun": ["こと"] },
+    "meanings": ["particularly", "especially", "exceptional"],
+    "strokes": 10,
+    "examples": ["特殊", "殊更", "殊勝"]
+  },
+  {
+    "character": "携",
+    "readings": { "on": ["ケイ"], "kun": ["たずさ.える", "たずさ.わる"] },
+    "meanings": ["carry", "take along", "engage in"],
+    "strokes": 18,
+    "examples": ["携帯", "携行", "提携"]
+  },
+  {
+    "character": "懸",
+    "readings": { "on": ["ケン", "ケ"], "kun": ["か.ける", "か.かる"] },
+    "meanings": ["hang", "suspend", "depend on"],
+    "strokes": 20,
+    "examples": ["懸念", "懸命", "一生懸命"]
+  },
+  {
+    "character": "顕",
+    "readings": { "on": ["ケン"], "kun": ["あらわ.れる", "あきらか"] },
+    "meanings": ["appear", "manifest", "prominent"],
+    "strokes": 18,
+    "examples": ["顕著", "顕在", "顕微鏡"]
+  }
+]

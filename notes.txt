@@ -1,0 +1,2 @@
+Ideas
+- Add tracking capabilities even between separate localhosts session (maybe with a file that we can update with REST API calls?)
