@@ -79,6 +79,12 @@
     document.getElementById('kanji-progress-bar').style.width = kPct + '%';
     document.getElementById('vocab-progress-bar').style.width = vPct + '%';
 
+    // SRS due counts
+    const kanjiDue = Progress.getDueCount(kanjiIds);
+    const vocabDue = Progress.getDueCount(vocabIds);
+    document.getElementById('kanji-due').textContent = kanjiDue;
+    document.getElementById('vocab-due').textContent = vocabDue;
+
     document.getElementById('reset-progress').addEventListener('click', () => {
       if (confirm('Reset all progress? This cannot be undone.')) {
         Progress.reset();
@@ -91,6 +97,37 @@
       el.addEventListener('click', () => startStudy('kanji')));
     document.querySelectorAll('[data-action="study-vocab"]').forEach(el =>
       el.addEventListener('click', () => startStudy('vocab')));
+    document.querySelectorAll('[data-action="review-kanji"]').forEach(el =>
+      el.addEventListener('click', () => startSrsReview('kanji')));
+    document.querySelectorAll('[data-action="review-vocab"]').forEach(el =>
+      el.addEventListener('click', () => startSrsReview('vocab')));
+  }
+
+  // ---- Start SRS Review (only due items) ----
+  function startSrsReview(mode) {
+    _currentMode = mode;
+    const allItems = mode === 'kanji' ? Data.getKanji() : Data.getVocab();
+    const getId = item => mode === 'kanji' ? item.character : item.word;
+
+    let items = Progress.filterItems(allItems, getId, 'srs');
+    if (items.length === 0) {
+      alert('No cards due for review right now. Check back later!');
+      return;
+    }
+
+    // Limit to quiz size
+    const size = _quizSize === 0 ? items.length : Math.min(_quizSize, items.length);
+    const shuffled = shuffleArr(items).slice(0, size);
+
+    updateNav('study');
+    const frag = cloneTemplate('tpl-flashcard');
+    setView(frag);
+
+    document.querySelector('[data-action="home"]')?.addEventListener('click', showHome);
+
+    Flashcard.mount(mode, shuffled, ({ correct, incorrect, total }) => {
+      showSummary({ correct, incorrect, total, mode });
+    });
   }
 
   // ---- Start Study ----

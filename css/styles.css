@@ -195,6 +195,24 @@ main {
 }
 .badge-secondary { color: var(--text-muted); }
 
+.deck-buttons { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+.due-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4em;
+  height: 1.4em;
+  padding: 0 .35em;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 700;
+  margin-left: .3rem;
+  line-height: 1;
+}
+
 /* ============================================================
    PROGRESS BAR
    ============================================================ */

@@ -30,7 +30,6 @@ const Flashcard = (() => {
     return `
       <div class="card-label">Kanji</div>
       <div class="card-character">${card.character}</div>
-      <div class="card-label" style="margin-top:.5rem">${card.strokes ? card.strokes + ' strokes' : ''}</div>
     `;
   }
 

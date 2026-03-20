@@ -29,7 +29,10 @@
           <div class="progress-bar-wrap">
             <div class="progress-bar" id="kanji-progress-bar"></div>
           </div>
-          <button class="btn btn-primary" data-action="study-kanji">Study</button>
+          <div class="deck-buttons">
+            <button class="btn btn-primary" data-action="study-kanji">Study</button>
+            <button class="btn btn-secondary" data-action="review-kanji">Review Due <span class="due-badge" id="kanji-due">0</span></button>
+          </div>
         </div>
         <div class="deck-card" data-action="study-vocab">
           <div class="deck-icon">語</div>
@@ -41,7 +44,10 @@
           <div class="progress-bar-wrap">
             <div class="progress-bar" id="vocab-progress-bar"></div>
           </div>
-          <button class="btn btn-primary" data-action="study-vocab">Study</button>
+          <div class="deck-buttons">
+            <button class="btn btn-primary" data-action="study-vocab">Study</button>
+            <button class="btn btn-secondary" data-action="review-vocab">Review Due <span class="due-badge" id="vocab-due">0</span></button>
+          </div>
         </div>
       </div>
 
@@ -63,6 +69,7 @@
             <option value="new">New only</option>
             <option value="learning">Learning only</option>
             <option value="due">New + Learning</option>
+            <option value="srs">SRS Due</option>
           </select>
         </div>
         <button class="btn btn-danger" id="reset-progress">Reset All Progress</button>

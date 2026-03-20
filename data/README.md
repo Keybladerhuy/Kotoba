@@ -17,7 +17,6 @@ Array of kanji objects with the following schema:
       "kun": ["うれ.える", "うれ.い"]
     },
     "meanings": ["melancholy", "grief"],
-    "strokes": 15,
     "examples": ["憂鬱", "憂慮"]
   }
 ]
@@ -29,7 +28,6 @@ Array of kanji objects with the following schema:
 | `readings.on` | string[] | ✓ | On-yomi readings (can be empty array) |
 | `readings.kun` | string[] | ✓ | Kun-yomi readings (can be empty array) |
 | `meanings` | string[] | ✓ | English meanings |
-| `strokes` | number | | Stroke count |
 | `examples` | string[] | | Example words using this kanji |
 
 ---
@@ -89,7 +87,7 @@ These slash commands are available in Claude Code for maintaining the data files
 Adds a new kanji entry to `kanji.json`.
 
 - Checks for an existing entry first — reports "already exists" if found
-- Looks up on-readings, kun-readings, meanings, stroke count, and example words
+- Looks up on-readings, kun-readings, meanings, and example words
 - Appends a correctly-shaped entry if the kanji is new
 
 **Usage:** `/add-kanji 覚`
