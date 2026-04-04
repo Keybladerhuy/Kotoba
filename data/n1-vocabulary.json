@@ -46798,5 +46798,619 @@
       "ja": "",
       "en": ""
     }
+  },
+  {
+    "word": "齎す",
+    "reading": "もたらす",
+    "meanings": [
+      "to bring about",
+      "to cause",
+      "to produce"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "この政策は大きな変化を齎した。",
+      "en": "This policy brought about major changes."
+    }
+  },
+  {
+    "word": "瞬く",
+    "reading": "またたく",
+    "meanings": [
+      "to blink",
+      "to twinkle",
+      "to flicker"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "星が瞬いている。",
+      "en": "The stars are twinkling."
+    }
+  },
+  {
+    "word": "翻す",
+    "reading": "ひるがえす",
+    "meanings": [
+      "to turn over",
+      "to reverse",
+      "to wave (flag)"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "彼は自分の決定を翻した。",
+      "en": "He reversed his decision."
+    }
+  },
+  {
+    "word": "蔑む",
+    "reading": "さげすむ",
+    "meanings": [
+      "to scorn",
+      "to despise",
+      "to look down on"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "他人を蔑むべきではない。",
+      "en": "You should not look down on others."
+    }
+  },
+  {
+    "word": "嘲る",
+    "reading": "あざける",
+    "meanings": [
+      "to ridicule",
+      "to mock",
+      "to jeer at"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "失敗した人を嘲るのは卑劣だ。",
+      "en": "It is cowardly to mock those who have failed."
+    }
+  },
+  {
+    "word": "慄く",
+    "reading": "おののく",
+    "meanings": [
+      "to tremble",
+      "to shudder",
+      "to shiver with fear"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "恐怖で慄いた。",
+      "en": "I trembled with fear."
+    }
+  },
+  {
+    "word": "儚い",
+    "reading": "はかない",
+    "meanings": [
+      "fleeting",
+      "transient",
+      "ephemeral"
+    ],
+    "pos": "adjective",
+    "example": {
+      "ja": "人生は儚いものだ。",
+      "en": "Life is a fleeting thing."
+    }
+  },
+  {
+    "word": "疎い",
+    "reading": "うとい",
+    "meanings": [
+      "distant",
+      "estranged",
+      "unfamiliar with"
+    ],
+    "pos": "adjective",
+    "example": {
+      "ja": "私は機械に疎い。",
+      "en": "I am unfamiliar with machines."
+    }
+  },
+  {
+    "word": "媚びる",
+    "reading": "こびる",
+    "meanings": [
+      "to flatter",
+      "to fawn on",
+      "to curry favor"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "上司に媚びるのは嫌いだ。",
+      "en": "I dislike fawning on my superiors."
+    }
+  },
+  {
+    "word": "拗ねる",
+    "reading": "すねる",
+    "meanings": [
+      "to sulk",
+      "to pout",
+      "to be peevish"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "子供が拗ねてしまった。",
+      "en": "The child started sulking."
+    }
+  },
+  {
+    "word": "窘める",
+    "reading": "たしなめる",
+    "meanings": [
+      "to admonish",
+      "to warn",
+      "to rebuke gently"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "母は子供を窘めた。",
+      "en": "The mother gently admonished the child."
+    }
+  },
+  {
+    "word": "塞ぐ",
+    "reading": "ふさぐ",
+    "meanings": [
+      "to block",
+      "to close up",
+      "to obstruct"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "穴を塞いでください。",
+      "en": "Please block the hole."
+    }
+  },
+  {
+    "word": "弄ぶ",
+    "reading": "もてあそぶ",
+    "meanings": [
+      "to toy with",
+      "to trifle with",
+      "to play with"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "人の感情を弄んではいけない。",
+      "en": "You must not toy with people's feelings."
+    }
+  },
+  {
+    "word": "僻む",
+    "reading": "ひがむ",
+    "meanings": [
+      "to be prejudiced",
+      "to be envious",
+      "to take offense"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "そう僻まないでください。",
+      "en": "Please don't take it the wrong way."
+    }
+  },
+  {
+    "word": "蝕む",
+    "reading": "むしばむ",
+    "meanings": [
+      "to eat into",
+      "to erode",
+      "to undermine"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "汚染が環境を蝕んでいる。",
+      "en": "Pollution is eroding the environment."
+    }
+  },
+  {
+    "word": "侮る",
+    "reading": "あなどる",
+    "meanings": [
+      "to despise",
+      "to underestimate",
+      "to look down on"
+    ],
+    "pos": "verb",
+    "example": {
+      "ja": "敵を侮ってはならない。",
+      "en": "You must not underestimate the enemy."
+    }
+  },
+  {
+    "word": "揶揄",
+    "reading": "やゆ",
+    "meanings": [
+      "ridicule",
+      "mockery",
+      "teasing"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "彼の発言は揶揄に満ちていた。",
+      "en": "His remarks were full of mockery."
+    }
+  },
+  {
+    "word": "矜持",
+    "reading": "きょうじ",
+    "meanings": [
+      "pride",
+      "dignity",
+      "self-respect"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "職人としての矜持を持っている。",
+      "en": "He has pride as a craftsman."
+    }
+  },
+  {
+    "word": "刹那",
+    "reading": "せつな",
+    "meanings": [
+      "moment",
+      "instant",
+      "split second"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "刹那の判断が命を救った。",
+      "en": "A split-second decision saved a life."
+    }
+  },
+  {
+    "word": "杞憂",
+    "reading": "きゆう",
+    "meanings": [
+      "groundless fear",
+      "needless anxiety",
+      "unfounded worry"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "それは杞憂に過ぎなかった。",
+      "en": "It was nothing but a groundless fear."
+    }
+  },
+  {
+    "word": "逡巡",
+    "reading": "しゅんじゅん",
+    "meanings": [
+      "hesitation",
+      "indecision",
+      "vacillation"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "彼は逡巡の末に決断した。",
+      "en": "He made a decision after much hesitation."
+    }
+  },
+  {
+    "word": "慟哭",
+    "reading": "どうこく",
+    "meanings": [
+      "wailing",
+      "lamentation",
+      "bitter weeping"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "彼女は慟哭した。",
+      "en": "She wailed bitterly."
+    }
+  },
+  {
+    "word": "邂逅",
+    "reading": "かいこう",
+    "meanings": [
+      "chance meeting",
+      "unexpected encounter"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "旧友との邂逅に驚いた。",
+      "en": "I was surprised by the chance meeting with an old friend."
+    }
+  },
+  {
+    "word": "忌憚",
+    "reading": "きたん",
+    "meanings": [
+      "reserve",
+      "hesitation",
+      "restraint"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "忌憚のないご意見をお聞かせください。",
+      "en": "Please give us your frank opinion."
+    }
+  },
+  {
+    "word": "瓦解",
+    "reading": "がかい",
+    "meanings": [
+      "collapse",
+      "downfall",
+      "disintegration"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "組織が瓦解した。",
+      "en": "The organization collapsed."
+    }
+  },
+  {
+    "word": "恣意",
+    "reading": "しい",
+    "meanings": [
+      "arbitrariness",
+      "wilfulness",
+      "capriciousness"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "恣意的な判断は避けるべきだ。",
+      "en": "Arbitrary decisions should be avoided."
+    }
+  },
+  {
+    "word": "怠惰",
+    "reading": "たいだ",
+    "meanings": [
+      "laziness",
+      "sloth",
+      "indolence"
+    ],
+    "pos": "na-adjective",
+    "example": {
+      "ja": "怠惰な生活を送っている。",
+      "en": "He is leading an indolent life."
+    }
+  },
+  {
+    "word": "貪欲",
+    "reading": "どんよく",
+    "meanings": [
+      "greed",
+      "avarice",
+      "rapacity"
+    ],
+    "pos": "na-adjective",
+    "example": {
+      "ja": "知識に対して貪欲であるべきだ。",
+      "en": "One should be greedy for knowledge."
+    }
+  },
+  {
+    "word": "寡黙",
+    "reading": "かもく",
+    "meanings": [
+      "taciturn",
+      "reticent",
+      "quiet"
+    ],
+    "pos": "na-adjective",
+    "example": {
+      "ja": "彼は寡黙な人だ。",
+      "en": "He is a taciturn person."
+    }
+  },
+  {
+    "word": "傲慢",
+    "reading": "ごうまん",
+    "meanings": [
+      "arrogance",
+      "haughtiness",
+      "insolence"
+    ],
+    "pos": "na-adjective",
+    "example": {
+      "ja": "傲慢な態度は嫌われる。",
+      "en": "An arrogant attitude is disliked."
+    }
+  },
+  {
+    "word": "狡猾",
+    "reading": "こうかつ",
+    "meanings": [
+      "cunning",
+      "sly",
+      "crafty"
+    ],
+    "pos": "na-adjective",
+    "example": {
+      "ja": "狡猾な手段を使った。",
+      "en": "He used cunning means."
+    }
+  },
+  {
+    "word": "辛辣",
+    "reading": "しんらつ",
+    "meanings": [
+      "bitter",
+      "harsh",
+      "scathing"
+    ],
+    "pos": "na-adjective",
+    "example": {
+      "ja": "辛辣な批評を受けた。",
+      "en": "He received scathing criticism."
+    }
+  },
+  {
+    "word": "荘厳",
+    "reading": "そうごん",
+    "meanings": [
+      "solemn",
+      "sublime",
+      "majestic"
+    ],
+    "pos": "na-adjective",
+    "example": {
+      "ja": "荘厳な雰囲気に包まれた。",
+      "en": "It was enveloped in a solemn atmosphere."
+    }
+  },
+  {
+    "word": "安堵",
+    "reading": "あんど",
+    "meanings": [
+      "relief",
+      "reassurance"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "合格の知らせに安堵した。",
+      "en": "I felt relief at the news of passing."
+    }
+  },
+  {
+    "word": "惰性",
+    "reading": "だせい",
+    "meanings": [
+      "inertia",
+      "habit",
+      "momentum"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "惰性で続けているだけだ。",
+      "en": "I am just continuing out of inertia."
+    }
+  },
+  {
+    "word": "葛藤",
+    "reading": "かっとう",
+    "meanings": [
+      "conflict",
+      "discord",
+      "inner struggle"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "心の中で葛藤が続いている。",
+      "en": "An inner struggle continues in my heart."
+    }
+  },
+  {
+    "word": "懸念",
+    "reading": "けねん",
+    "meanings": [
+      "concern",
+      "worry",
+      "apprehension"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "安全性に対する懸念が高まっている。",
+      "en": "Concerns about safety are growing."
+    }
+  },
+  {
+    "word": "脆弱",
+    "reading": "ぜいじゃく",
+    "meanings": [
+      "fragile",
+      "vulnerable",
+      "frail"
+    ],
+    "pos": "na-adjective",
+    "example": {
+      "ja": "このシステムは脆弱だ。",
+      "en": "This system is vulnerable."
+    }
+  },
+  {
+    "word": "潤沢",
+    "reading": "じゅんたく",
+    "meanings": [
+      "abundant",
+      "ample",
+      "plentiful"
+    ],
+    "pos": "na-adjective",
+    "example": {
+      "ja": "潤沢な資金がある。",
+      "en": "There are ample funds."
+    }
+  },
+  {
+    "word": "稀有",
+    "reading": "けう",
+    "meanings": [
+      "rare",
+      "extraordinary",
+      "uncommon"
+    ],
+    "pos": "na-adjective",
+    "example": {
+      "ja": "稀有な才能の持ち主だ。",
+      "en": "He is a person of rare talent."
+    }
+  },
+  {
+    "word": "凄惨",
+    "reading": "せいさん",
+    "meanings": [
+      "ghastly",
+      "gruesome",
+      "appalling"
+    ],
+    "pos": "na-adjective",
+    "example": {
+      "ja": "凄惨な事件が起きた。",
+      "en": "A gruesome incident occurred."
+    }
+  },
+  {
+    "word": "喧噪",
+    "reading": "けんそう",
+    "meanings": [
+      "noise",
+      "clamor",
+      "tumult"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "都会の喧噪から離れたい。",
+      "en": "I want to get away from the clamor of the city."
+    }
+  },
+  {
+    "word": "疲弊",
+    "reading": "ひへい",
+    "meanings": [
+      "exhaustion",
+      "impoverishment",
+      "depletion"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "長期の戦争で国が疲弊した。",
+      "en": "The country was exhausted by the long war."
+    }
+  },
+  {
+    "word": "躊躇",
+    "reading": "ちゅうちょ",
+    "meanings": [
+      "hesitation",
+      "indecision",
+      "wavering"
+    ],
+    "pos": "noun",
+    "example": {
+      "ja": "躊躇なく行動した。",
+      "en": "I acted without hesitation."
+    }
   }
 ]

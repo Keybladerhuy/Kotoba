@@ -10,7 +10,19 @@
   <div id="app">
     <header>
       <h1>日本語 Study</h1>
-      <nav id="nav"></nav>
+      <div class="header-actions">
+        <nav id="nav"></nav>
+        <button class="stats-toggle" id="stats-toggle" title="View progress">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="4" y1="14" x2="4" y2="8"/>
+            <line x1="9" y1="14" x2="9" y2="4"/>
+            <line x1="14" y1="14" x2="14" y2="10"/>
+          </svg>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" title="Toggle theme">
+          <span id="theme-icon">&#9790;</span>
+        </button>
+      </div>
     </header>
     <main id="view"></main>
   </div>
@@ -18,7 +30,23 @@
   <!-- Home View -->
   <template id="tpl-home">
     <div class="home">
-      <div class="deck-cards">
+      <div class="level-selector">
+        <span class="level-label">JLPT Level</span>
+        <div class="pill-toggle pill-toggle-5" id="level-toggle">
+          <input type="radio" name="jlpt-level" id="level-n1" value="n1">
+          <label for="level-n1">N1</label>
+          <input type="radio" name="jlpt-level" id="level-n2" value="n2">
+          <label for="level-n2">N2</label>
+          <input type="radio" name="jlpt-level" id="level-n3" value="n3">
+          <label for="level-n3">N3</label>
+          <input type="radio" name="jlpt-level" id="level-n4" value="n4">
+          <label for="level-n4">N4</label>
+          <input type="radio" name="jlpt-level" id="level-n5" value="n5">
+          <label for="level-n5">N5</label>
+        </div>
+      </div>
+
+      <div class="deck-cards stagger">
         <div class="deck-card" data-action="study-kanji">
           <div class="deck-icon">漢</div>
           <h2>Kanji</h2>
@@ -63,6 +91,25 @@
           </select>
         </div>
         <div class="setting-row">
+          <label>Study mode</label>
+          <div class="pill-toggle pill-toggle-3" id="study-mode-toggle">
+            <input type="radio" name="study-mode" id="mode-flashcard" value="flashcard" checked>
+            <label for="mode-flashcard">Flashcard</label>
+            <input type="radio" name="study-mode" id="mode-quiz" value="quiz">
+            <label for="mode-quiz">Quiz</label>
+            <input type="radio" name="study-mode" id="mode-typing" value="typing">
+            <label for="mode-typing">Typing</label>
+          </div>
+        </div>
+        <div class="setting-row hidden" id="typing-sub-mode-row">
+          <label for="typing-sub-mode">Typing asks for</label>
+          <select id="typing-sub-mode">
+            <option value="meaning">Meaning</option>
+            <option value="reading">Reading</option>
+            <option value="mixed">Mixed</option>
+          </select>
+        </div>
+        <div class="setting-row">
           <label for="filter-mode">Show cards</label>
           <select id="filter-mode">
             <option value="all">All cards</option>
@@ -73,6 +120,48 @@
           </select>
         </div>
         <button class="btn btn-danger" id="reset-progress">Reset All Progress</button>
+      </div>
+
+      <div class="settings-panel">
+        <button class="settings-toggle-btn" id="srs-settings-toggle">
+          <h3>SRS Settings</h3>
+          <span class="toggle-arrow" id="srs-toggle-arrow">&#9654;</span>
+        </button>
+        <div class="srs-settings-body hidden" id="srs-settings-body">
+          <div class="setting-row">
+            <label for="srs-repeat-wrong">Repeat wrong cards <span class="info-tip" tabindex="0" aria-label="Re-queue cards you miss later in the same session. Each wrong answer adds one required correct repeat before the card is cleared.">?</span></label>
+            <input type="checkbox" id="srs-repeat-wrong" checked>
+          </div>
+          <div class="setting-row">
+            <label for="srs-learning-steps">Learning steps (days) <span class="info-tip" tabindex="0" aria-label="Comma-separated intervals (in days) a new card must pass before graduating to full SRS. E.g. '1, 3' means: first correct → review in 1 day, second correct → review in 3 days, then graduate.">?</span></label>
+            <input type="text" id="srs-learning-steps" class="setting-input" value="1, 3" placeholder="e.g. 1, 3">
+          </div>
+          <div class="setting-row">
+            <label for="srs-graduate-interval">Graduate interval (days) <span class="info-tip" tabindex="0" aria-label="The first full SRS interval (in days) assigned to a card after it completes all learning steps.">?</span></label>
+            <input type="number" id="srs-graduate-interval" class="setting-input" value="6" min="1" max="60">
+          </div>
+          <div class="setting-row">
+            <label for="srs-default-ease">Default ease factor <span class="info-tip" tabindex="0" aria-label="Starting ease multiplier for new cards. Each correct answer multiplies the current interval by this value. Higher = intervals grow faster.">?</span></label>
+            <input type="number" id="srs-default-ease" class="setting-input" value="2.5" min="1.3" max="5.0" step="0.1">
+          </div>
+          <div class="setting-row">
+            <label for="srs-min-ease">Minimum ease factor <span class="info-tip" tabindex="0" aria-label="The lowest the ease factor can fall. Prevents cards from being scheduled too frequently no matter how often you get them wrong.">?</span></label>
+            <input type="number" id="srs-min-ease" class="setting-input" value="1.3" min="1.0" max="2.5" step="0.1">
+          </div>
+          <div class="setting-row">
+            <label for="srs-ease-bonus">Ease bonus (on correct) <span class="info-tip" tabindex="0" aria-label="Amount added to the ease factor each time you answer correctly. Capped at the default ease value.">?</span></label>
+            <input type="number" id="srs-ease-bonus" class="setting-input" value="0.1" min="0" max="1.0" step="0.05">
+          </div>
+          <div class="setting-row">
+            <label for="srs-ease-penalty">Ease penalty (on wrong) <span class="info-tip" tabindex="0" aria-label="Amount subtracted from the ease factor each time you answer incorrectly. Cannot drop below the minimum ease.">?</span></label>
+            <input type="number" id="srs-ease-penalty" class="setting-input" value="0.2" min="0" max="1.0" step="0.05">
+          </div>
+          <div class="setting-row">
+            <label for="srs-known-threshold">Correct to "known" <span class="info-tip" tabindex="0" aria-label="Total number of correct answers required to promote a card from 'learning' to 'known' status.">?</span></label>
+            <input type="number" id="srs-known-threshold" class="setting-input" value="3" min="1" max="20">
+          </div>
+          <button class="btn btn-secondary" id="srs-reset-defaults">Reset to Defaults</button>
+        </div>
       </div>
     </div>
   </template>
@@ -119,9 +208,164 @@
     </div>
   </template>
 
+  <!-- Quiz View (Multiple Choice) -->
+  <template id="tpl-quiz">
+    <div class="quiz-view">
+      <div class="quiz-header">
+        <button class="btn btn-ghost" data-action="home">← Back</button>
+        <div class="quiz-info">
+          <span id="quiz-card-counter">1 / 25</span>
+          <div class="mini-progress-bar-wrap">
+            <div class="mini-progress-bar" id="quiz-mc-progress-bar"></div>
+          </div>
+        </div>
+        <div class="score-display">
+          <span class="score-correct" id="quiz-score-correct">0</span>
+          <span class="score-sep">/</span>
+          <span class="score-total" id="quiz-score-seen">0</span>
+        </div>
+      </div>
+
+      <div class="quiz-prompt-area">
+        <div class="quiz-prompt-sub" id="quiz-prompt-sub">Kanji</div>
+        <div class="quiz-prompt-text" id="quiz-prompt"></div>
+      </div>
+
+      <div class="quiz-choices" id="quiz-choices"></div>
+
+      <p class="hint" id="quiz-hint">Press 1-4 to choose</p>
+    </div>
+  </template>
+
+  <!-- Typing View -->
+  <template id="tpl-typing">
+    <div class="typing-view">
+      <div class="quiz-header">
+        <button class="btn btn-ghost" data-action="home">&larr; Back</button>
+        <div class="quiz-info">
+          <span id="typing-card-counter">1 / 25</span>
+          <div class="mini-progress-bar-wrap">
+            <div class="mini-progress-bar" id="typing-progress-bar"></div>
+          </div>
+        </div>
+        <div class="score-display">
+          <span class="score-correct" id="typing-score-correct">0</span>
+          <span class="score-sep">/</span>
+          <span class="score-total" id="typing-score-seen">0</span>
+        </div>
+      </div>
+
+      <div class="quiz-prompt-area">
+        <div class="quiz-prompt-sub" id="typing-prompt-sub">Kanji &middot; Type the meaning</div>
+        <div class="quiz-prompt-text" id="typing-prompt"></div>
+      </div>
+
+      <div class="typing-input-area">
+        <input type="text" class="typing-input" id="typing-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type your answer...">
+        <button class="btn btn-primary" id="typing-submit">Submit</button>
+      </div>
+
+      <div class="typing-feedback" id="typing-feedback"></div>
+      <p class="hint" id="typing-hint">Type in English, then press Enter</p>
+    </div>
+  </template>
+
+  <!-- Stats View -->
+  <template id="tpl-stats">
+    <div class="stats-view">
+      <div class="stats-header">
+        <button class="btn btn-ghost" data-action="home">← Back</button>
+        <h2>Progress</h2>
+        <div></div>
+      </div>
+
+      <div class="stats-overview stagger">
+        <div class="stats-card">
+          <h3>Kanji</h3>
+          <div class="donut-chart" id="stats-kanji-donut"></div>
+          <div class="donut-legend">
+            <span class="legend-item legend-known"><span class="legend-dot"></span> Known <strong id="stats-kanji-known">0</strong></span>
+            <span class="legend-item legend-learning"><span class="legend-dot"></span> Learning <strong id="stats-kanji-learning">0</strong></span>
+            <span class="legend-item legend-new"><span class="legend-dot"></span> New <strong id="stats-kanji-new">0</strong></span>
+          </div>
+        </div>
+
+        <div class="stats-card">
+          <h3>Vocabulary</h3>
+          <div class="donut-chart" id="stats-vocab-donut"></div>
+          <div class="donut-legend">
+            <span class="legend-item legend-known"><span class="legend-dot"></span> Known <strong id="stats-vocab-known">0</strong></span>
+            <span class="legend-item legend-learning"><span class="legend-dot"></span> Learning <strong id="stats-vocab-learning">0</strong></span>
+            <span class="legend-item legend-new"><span class="legend-dot"></span> New <strong id="stats-vocab-new">0</strong></span>
+          </div>
+        </div>
+
+        <div class="stats-card stats-card-wide">
+          <div class="stats-metric-row">
+            <div class="stat-block">
+              <div class="stat-number" id="stats-accuracy">—</div>
+              <div class="stat-label">Accuracy</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-number" id="stats-studied">0</div>
+              <div class="stat-label">Studied</div>
+            </div>
+          </div>
+          <h3>Upcoming Reviews</h3>
+          <div class="review-schedule">
+            <div class="review-slot">
+              <div class="review-count" id="stats-due-today">0</div>
+              <div class="review-label">Today</div>
+            </div>
+            <div class="review-slot">
+              <div class="review-count" id="stats-due-tomorrow">0</div>
+              <div class="review-label">Tomorrow</div>
+            </div>
+            <div class="review-slot">
+              <div class="review-count" id="stats-due-week">0</div>
+              <div class="review-label">This Week</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-card">
+        <h3>Hardest Items</h3>
+        <div class="hardest-list" id="stats-hardest"></div>
+      </div>
+
+      <div class="stats-card">
+        <div class="item-list-controls">
+          <h3>All Studied Items</h3>
+          <div class="item-list-filters">
+            <select id="stats-type-filter">
+              <option value="all">All types</option>
+              <option value="kanji">Kanji</option>
+              <option value="vocab">Vocabulary</option>
+            </select>
+            <select id="stats-status-filter">
+              <option value="studied">Studied</option>
+              <option value="known">Known</option>
+              <option value="learning">Learning</option>
+              <option value="all">All (incl. new)</option>
+            </select>
+            <select id="stats-sort">
+              <option value="last-seen">Last Seen</option>
+              <option value="accuracy-asc">Accuracy (low first)</option>
+              <option value="accuracy-desc">Accuracy (high first)</option>
+              <option value="name">Name</option>
+            </select>
+          </div>
+        </div>
+        <div class="item-list-scroll" id="stats-item-list"></div>
+      </div>
+    </div>
+  </template>
+
   <!-- Summary View -->
   <template id="tpl-summary">
     <div class="summary-view">
+      <div class="summary-celebration" id="summary-celebration"></div>
       <h2>Session Complete</h2>
       <div class="summary-stats">
         <div class="stat-block">
@@ -148,9 +392,14 @@
     </div>
   </template>
 
+  <script src="js/theme.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/srs-settings.js"></script>
   <script src="js/progress.js"></script>
+  <script src="js/session.js"></script>
   <script src="js/flashcard.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/typing.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

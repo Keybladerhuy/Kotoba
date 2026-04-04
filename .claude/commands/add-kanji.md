@@ -1,10 +1,11 @@
-Add a kanji entry to `data/kanji.json` for the character: $ARGUMENTS
+Add a kanji entry to the current JLPT level's kanji file for the character: $ARGUMENTS
 
 ## Steps
 
-1. **Read** `data/kanji.json` and search for an entry where `character` equals the argument.
-2. **If found**: Report "Already exists" and display the current entry. Stop.
-3. **If not found**: Look up the kanji and append a new entry with the following schema:
+1. **Determine the target file**: Use `data/n1-kanji.json` by default. If the user specifies a level (e.g. "add N2 kanji 漢"), use `data/n2-kanji.json`, etc.
+2. **Read** the target file and search for an entry where `character` equals the argument.
+3. **If found**: Report "Already exists" and display the current entry. Stop.
+4. **If not found**: Look up the kanji and append a new entry with the following schema:
 
 ```json
 {

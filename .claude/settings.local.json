@@ -6,7 +6,15 @@
       "Bash(gh auth:*)",
       "Bash(gh repo:*)",
       "Bash(python scripts/import_kanji.py)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(cp \"C:/Code/Claude/JapaneseN1/data/kanji.json\" \"C:/Code/Claude/JapaneseN1/data/n1-kanji.json\")",
+      "Bash(cp \"C:/Code/Claude/JapaneseN1/data/vocabulary.json\" \"C:/Code/Claude/JapaneseN1/data/n1-vocabulary.json\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/mistval/unofficial-jisho-api/master/README.md\")",
+      "Bash(curl -s \"https://jisho.org/api/v1/search/words?keyword=%2A%E9%86%B8%2A\")"
     ]
   }
 }

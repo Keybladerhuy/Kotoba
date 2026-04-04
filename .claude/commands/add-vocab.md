@@ -1,10 +1,11 @@
-Add a vocabulary entry to `data/vocabulary.json` for the word: $ARGUMENTS
+Add a vocabulary entry to the current JLPT level's vocabulary file for the word: $ARGUMENTS
 
 ## Steps
 
-1. **Read** `data/vocabulary.json` and search for an entry where `word` equals the argument.
-2. **If found**: Report "Already exists" and display the current entry. Stop.
-3. **If not found**: Look up the word and append a new entry with the following schema:
+1. **Determine the target file**: Use `data/n1-vocabulary.json` by default. If the user specifies a level (e.g. "add N2 vocab 概念"), use `data/n2-vocabulary.json`, etc.
+2. **Read** the target file and search for an entry where `word` equals the argument.
+3. **If found**: Report "Already exists" and display the current entry. Stop.
+4. **If not found**: Look up the word and append a new entry with the following schema:
 
 ```json
 {

@@ -3,11 +3,11 @@
 Ideas and future improvements for Kotoba.
 
 ## Features
-- [ ] Spaced repetition system (SRS) for kanji and vocabulary review
+- [x] Spaced repetition system (SRS) for kanji and vocabulary review
 - [ ] Example sentences for vocabulary entries
-- [ ] Quiz mode: multiple choice or typing answers
-- [ ] Progress tracking and statistics dashboard
-
+- [x] Quiz mode: multiple choice or typing answers
+- [x] Progress tracking and statistics dashboard
+- [x] Typing mode for quiz (type reading/meaning instead of multiple choice)
 
 ## Data
 - [ ] Add more N1 vocabulary entries to `data/vocabulary.json`
@@ -16,9 +16,10 @@ Ideas and future improvements for Kotoba.
 - [ ] Add antonyms and related words to vocabulary entries
 
 ## UI/UX
-- [ ] Dark mode toggle
-- [ ] Keyboard shortcuts for card navigation
+- [x] Dark mode toggle
+- [x] Keyboard shortcuts for card navigation
 - [ ] Furigana toggle (show/hide readings above kanji in example sentences)
+- [x] Modern UI redesign (glassmorphism, animations, pill toggles, warmer palette)
 
 ## Infrastructure
 - [ ] Add a dev script for hot-reloading during development
