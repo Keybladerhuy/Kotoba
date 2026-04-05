@@ -1,13 +1,13 @@
 /**
- * session.js — Shared session state for Flashcard and Quiz modes
+ * session.js — Shared session state for unified study flow
  *
  * Manages: deck, shuffle, index, scoring, progress updates.
- * Both Flashcard and Quiz delegate session bookkeeping here.
+ * Cards progress through mastery levels within a single session:
+ *   Level 0 → Flashcard, Level 1 → Quiz, Level 2 → Typing, Level 3 → Mastered
  *
- * Repeat-wrong-cards: when enabled, missed cards are re-inserted later
- * in the deck. Each wrong answer adds one required correct repeat.
- * The card keeps reappearing until the user answers it correctly
- * enough times to "make up" for the mistakes.
+ * Repeat-wrong-cards is always on: missed cards are re-inserted later
+ * in the deck at the same level. Correct cards advance a level and
+ * are re-inserted to be tested in the next mode.
  */
 const Session = (() => {
   let _deck = [];
@@ -15,9 +15,9 @@ const Session = (() => {
   let _correct = 0;
   let _incorrect = 0;
   let _mode = 'kanji';
-  let _studyMode = 'flashcard';
   let _onComplete = null;
   let _originalTotal = 0;
+  let _allPool = []; // full data pool for quiz distractor generation
 
   // Repeat-wrong tracking: cardId → { wrongCount, correctNeeded }
   let _repeatMap = {};
@@ -31,9 +31,9 @@ const Session = (() => {
     return a;
   }
 
-  function start(mode, items, onComplete, studyMode) {
+  function start(mode, items, allPool, onComplete) {
     _mode = mode;
-    _studyMode = studyMode || 'flashcard';
+    _allPool = allPool || [];
     _deck = shuffle(items);
     _index = 0;
     _correct = 0;
@@ -49,6 +49,19 @@ const Session = (() => {
 
   function current() {
     return _deck[_index] || null;
+  }
+
+  /** Get the study mode for the current card based on its mastery level */
+  function currentMode() {
+    const card = _deck[_index];
+    if (!card) return null;
+    const id = getId(card);
+    const progress = Progress.getItem(id);
+    const level = progress ? progress.masteryLevel : 0;
+    if (level === 0) return 'flashcard';
+    if (level === 1) return 'quiz';
+    if (level === 2) return 'typing';
+    return null; // level 3 = mastered, shouldn't be in deck
   }
 
   function mode() {
@@ -71,11 +84,14 @@ const Session = (() => {
     return { correct: _correct, incorrect: _incorrect, total: _originalTotal };
   }
 
+  function allPool() {
+    return _allPool;
+  }
+
   /** Insert item at a random position between minAhead and end of deck */
   function _reinsert(item) {
-    // Place it at least 2 cards ahead (or at the end if deck is short)
     const minPos = _index + 2;
-    const maxPos = _deck.length; // will be pushed, so length = last+1
+    const maxPos = _deck.length;
     const pos = minPos >= maxPos
       ? maxPos
       : minPos + Math.floor(Math.random() * (maxPos - minPos + 1));
@@ -86,9 +102,7 @@ const Session = (() => {
   function recordAndAdvance(correct) {
     const card = _deck[_index];
     const id = getId(card);
-    const repeatEnabled = SrsSettings.get('repeatWrongCards');
 
-    // Initialize repeat tracking for this card if needed
     if (!_repeatMap[id]) {
       _repeatMap[id] = { wrongCount: 0, correctNeeded: 0 };
     }
@@ -97,28 +111,38 @@ const Session = (() => {
       _correct++;
 
       if (_repeatMap[id].correctNeeded > 0) {
-        // This is a repeat card — count down
+        // Repeat card — count down
         _repeatMap[id].correctNeeded--;
         if (_repeatMap[id].correctNeeded > 0) {
-          // Still needs more correct answers — re-insert
+          // Still needs more correct answers — re-insert at same level
           _reinsert(card);
         } else {
-          // Fully made up — record the final correct to SRS
-          Progress.recordResult(id, true, _studyMode);
+          // Fully made up — record correct (advances mastery level)
+          Progress.recordResult(id, true);
+          // Re-insert only if not yet mastered (level < 3)
+          const updated = Progress.getItem(id);
+          if (updated && updated.masteryLevel < 3) {
+            _repeatMap[id] = { wrongCount: 0, correctNeeded: 0 };
+            _reinsert(card);
+          }
         }
       } else {
-        // Normal correct — record to SRS
-        Progress.recordResult(id, true, _studyMode);
+        // Normal correct — record to progress (advances mastery level)
+        Progress.recordResult(id, true);
+        // Re-insert only if not yet mastered (level < 3)
+        const updated = Progress.getItem(id);
+        if (updated && updated.masteryLevel < 3) {
+          _reinsert(card);
+        }
       }
     } else {
       _incorrect++;
-      Progress.recordResult(id, false, _studyMode);
+      Progress.recordResult(id, false);
 
-      if (repeatEnabled) {
-        _repeatMap[id].wrongCount++;
-        _repeatMap[id].correctNeeded++;
-        _reinsert(card);
-      }
+      // Always repeat wrong cards
+      _repeatMap[id].wrongCount++;
+      _repeatMap[id].correctNeeded++;
+      _reinsert(card);
     }
 
     _index++;
@@ -129,11 +153,6 @@ const Session = (() => {
     return false;
   }
 
-  /** Get all items in the deck (for distractor generation). */
-  function allItems() {
-    return _deck;
-  }
-
   /** Get repeat info for the current card (for UI display) */
   function getRepeatInfo() {
     const card = _deck[_index];
@@ -142,5 +161,5 @@ const Session = (() => {
     return _repeatMap[id] || null;
   }
 
-  return { shuffle, start, getId, current, mode, total, originalTotal, index, scores, recordAndAdvance, allItems, getRepeatInfo };
+  return { shuffle, start, getId, current, currentMode, mode, total, originalTotal, index, scores, allPool, recordAndAdvance, getRepeatInfo };
 })();

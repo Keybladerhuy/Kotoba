@@ -25,16 +25,24 @@ Kotoba is a vanilla JS flashcard app for Japanese study across JLPT levels N1–
 |------|------|
 | `js/theme.js` | `Theme` module — dark/light toggle, persists to `localStorage` key `jp_theme`, applies `data-theme` attribute on `<html>` |
 | `js/data.js` | `Data` module — fetches and caches level-specific JSON files (e.g. `data/n1-kanji.json`) via `Promise.all`; exposes `setLevel(level)` / `getLevel()` |
-| `js/srs-settings.js` | `SrsSettings` module — configurable SRS parameters (ease, learning steps, repeat-wrong, thresholds) persisted to `localStorage` key `jp_srs_settings` |
-| `js/progress.js` | `Progress` module — reads/writes study progress to `localStorage` under key `jp_progress_<level>` (e.g. `jp_progress_n1`); tracks status (`new` → `learning` → `known`), correct/incorrect counts, and learning step per item |
-| `js/session.js` | `Session` module — shared session state (deck, shuffle, index, scoring, repeat-wrong-cards logic) used by both Flashcard and Quiz |
-| `js/flashcard.js` | `Flashcard` module — card flip animation (CSS class `flipped`), keyboard shortcuts (Space/←/→), and self-grading |
-| `js/quiz.js` | `Quiz` module — multiple choice mode: 4 answer choices, auto-grading, keyboard (1-4), visual feedback |
-| `js/app.js` | View router — boots the app, manages navigation between Home / Stats / Flashcard / Quiz / Summary views by cloning `<template>` elements from `index.html` |
+| `js/progress.js` | `Progress` module — reads/writes study progress to `localStorage` under key `jp_progress_<level>` (e.g. `jp_progress_n1`); tracks mastery level (0=unseen → 1=passed flashcard → 2=passed quiz → 3=mastered) and correct/incorrect counts per item |
+| `js/session.js` | `Session` module — shared session state (deck, shuffle, index, scoring, repeat-wrong-cards always on); determines which study mode to use per card via `currentMode()` based on mastery level |
+| `js/flashcard.js` | `Flashcard` module — card flip animation (CSS class `flipped`), keyboard shortcuts (Space/←/→), self-grading; renders current card from Session |
+| `js/quiz.js` | `Quiz` module — multiple choice mode: 4 answer choices, auto-grading, keyboard (1-4), visual feedback; renders current card from Session |
+| `js/typing.js` | `Typing` module — dual-input mode: user must type both meaning AND reading correctly; renders current card from Session |
+| `js/app.js` | View router — boots the app, manages navigation between Home / Stats / Study / Summary views; routes each card to the correct study module via `_showCurrentCard()` |
 
-Views are defined as `<template>` tags in `index.html` (`tpl-home`, `tpl-stats`, `tpl-flashcard`, `tpl-quiz`, `tpl-summary`) and injected into `<main id="view">` at runtime.
+Views are defined as `<template>` tags in `index.html` (`tpl-home`, `tpl-stats`, `tpl-flashcard`, `tpl-quiz`, `tpl-typing`, `tpl-summary`) and injected into `<main id="view">` at runtime.
 
-**Data flow:** `app.js` calls `Data.loadAll()` → calls `Flashcard.mount()` or `Quiz.mount()` depending on study mode setting → both delegate to `Session` for deck/scoring → `Session` calls `Progress.recordResult(id, correct)` per card → `onComplete` callback triggers `showSummary()`.
+**Study flow:** Cards progress through 3 mastery levels within a single session:
+1. **Level 0 → Flashcard** — self-grade flip card
+2. **Level 1 → Quiz** — 4-choice multiple choice
+3. **Level 2 → Typing** — must type both meaning and reading correctly
+4. **Level 3 = Mastered** — archived, won't appear unless progress is reset
+
+Correct answers advance the card's mastery level and re-insert it into the session deck for testing in the next mode. Wrong answers trigger repeat-wrong behavior (always on) — the card reappears at the same level.
+
+**Data flow:** `app.js` calls `Data.loadAll()` → `startStudy()` → `Session.start()` → `_showCurrentCard()` checks `Session.currentMode()` and mounts the appropriate module → module calls `Session.recordAndAdvance()` → `Progress.recordResult()` updates mastery → card re-inserted into deck → `_showCurrentCard()` called again for next card → `onComplete` callback triggers `showSummary()`.
 
 ## Data Files
 

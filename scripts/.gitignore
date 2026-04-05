@@ -1,0 +1,7 @@
+# Auto-generated state file — tracks used topics and passage hashes.
+# Regenerated automatically by generate-exercises.js. Safe to delete
+# if you want to reset topic cooldowns and dedup history.
+generation-state.json
+
+# Checkpoint file from populate_examples.py
+.examples_checkpoint_n1.json

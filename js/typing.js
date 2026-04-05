@@ -1,17 +1,17 @@
 /**
- * typing.js — Type-answer quiz mode
+ * typing.js — Dual-input typing mode (meaning + reading)
  *
- * Shows a prompt (kanji character or vocab word) and a text input.
- * User types the meaning or reading. Validates against accepted answers.
- * Keyboard: Enter to submit, Enter again to advance after feedback.
+ * Shows a prompt and two text inputs: one for the meaning, one for the reading.
+ * Both must be correct for the card to pass.
+ * Accepts any one valid answer per field (comma-delimited matching).
+ * Does not start the session itself. Renders current card from Session.
  */
 const Typing = (() => {
-  const FEEDBACK_DELAY = 1500;
+  const FEEDBACK_DELAY = 2500;
 
-  let _subMode = 'meaning'; // 'meaning' | 'reading' | 'mixed'
-  let _questionType = 'meaning'; // per-card: 'meaning' or 'reading'
   let _waiting = false;
   let _feedbackTimer = null;
+  let _onNext = null;
 
   /** Convert katakana to hiragana */
   function _kataToHira(str) {
@@ -25,50 +25,50 @@ const Typing = (() => {
     return _kataToHira(str.trim().toLowerCase().replace(/\./g, ''));
   }
 
-  /** Get the list of accepted answers for the current card */
-  function _getAcceptedAnswers(item) {
+  /** Get accepted meaning answers for the current card */
+  function _getAcceptedMeanings(item) {
+    return (item.meanings || []).slice();
+  }
+
+  /** Get accepted reading answers for the current card */
+  function _getAcceptedReadings(item) {
     const mode = Session.mode();
-
-    if (_questionType === 'meaning') {
-      return (item.meanings || []).slice();
-    }
-
-    // Reading mode
     if (mode === 'kanji') {
       const on = (item.readings?.on || []).map(r => r.replace(/\./g, ''));
       const kun = (item.readings?.kun || []).map(r => r.replace(/\./g, ''));
       return [...on, ...kun];
     }
-    // Vocab
-    return [item.reading];
+    return item.reading ? [item.reading] : [];
   }
 
-  /** Check if user input matches any accepted answer */
-  function _checkAnswer(input, item) {
-    const normalized = _normalize(input);
-    if (!normalized) return false;
-
-    const accepted = _getAcceptedAnswers(item);
-    return accepted.some(ans => _normalize(ans) === normalized);
+  /**
+   * Check if user input matches any accepted answer.
+   * User can type comma-separated values; any one match is sufficient.
+   */
+  function _checkField(input, acceptedAnswers) {
+    if (!input.trim()) return false;
+    const tokens = input.split(',').map(t => _normalize(t)).filter(Boolean);
+    return tokens.some(token =>
+      acceptedAnswers.some(ans => _normalize(ans) === token)
+    );
   }
 
   /** Format accepted answers for display */
-  function _formatAnswers(item) {
+  function _formatMeanings(item) {
+    return (item.meanings || []).join(', ');
+  }
+
+  function _formatReadings(item) {
     const mode = Session.mode();
-
-    if (_questionType === 'meaning') {
-      return (item.meanings || []).join(', ');
-    }
-
     if (mode === 'kanji') {
       const parts = [];
       const on = item.readings?.on || [];
       const kun = item.readings?.kun || [];
-      if (on.length) parts.push('On: ' + on.join(', '));
-      if (kun.length) parts.push('Kun: ' + kun.join(', '));
+      if (on.length) parts.push(on.join(', '));
+      if (kun.length) parts.push(kun.join(', '));
       return parts.join(' · ');
     }
-    return item.reading;
+    return item.reading || '';
   }
 
   function _getPrompt(item) {
@@ -77,27 +77,20 @@ const Typing = (() => {
 
   function _getPromptSub(item) {
     const mode = Session.mode();
-    const typeLabel = _questionType === 'meaning' ? 'Type the meaning' : 'Type the reading';
-    if (mode === 'kanji') return `Kanji · ${typeLabel}`;
-    return `Vocabulary · ${typeLabel}`;
-  }
-
-  function _pickQuestionType() {
-    if (_subMode === 'meaning') return 'meaning';
-    if (_subMode === 'reading') return 'reading';
-    return Math.random() < 0.5 ? 'meaning' : 'reading';
+    if (mode === 'kanji') return 'Kanji · Type meaning & reading';
+    return 'Vocabulary · Type meaning & reading';
   }
 
   function _renderCard() {
     const card = Session.current();
     if (!card) return;
 
-    _questionType = _pickQuestionType();
     _waiting = false;
 
     const promptEl = document.getElementById('typing-prompt');
     const promptSub = document.getElementById('typing-prompt-sub');
-    const inputEl = document.getElementById('typing-input');
+    const meaningInput = document.getElementById('typing-meaning');
+    const readingInput = document.getElementById('typing-reading');
     const feedbackEl = document.getElementById('typing-feedback');
     const counter = document.getElementById('typing-card-counter');
     const bar = document.getElementById('typing-progress-bar');
@@ -110,14 +103,18 @@ const Typing = (() => {
 
     promptEl.textContent = _getPrompt(card);
     promptSub.textContent = _getPromptSub(card);
-    inputEl.value = '';
-    inputEl.disabled = false;
-    inputEl.classList.remove('input-correct', 'input-wrong');
+
+    meaningInput.value = '';
+    meaningInput.disabled = false;
+    meaningInput.classList.remove('input-correct', 'input-wrong');
+
+    readingInput.value = '';
+    readingInput.disabled = false;
+    readingInput.classList.remove('input-correct', 'input-wrong');
+
     feedbackEl.innerHTML = '';
     feedbackEl.className = 'typing-feedback';
-    hintEl.textContent = _questionType === 'meaning'
-      ? 'Type in English, then press Enter'
-      : 'Type in kana, then press Enter';
+    hintEl.textContent = 'Type meaning & reading, then press Enter';
     submitBtn.textContent = 'Submit';
     submitBtn.disabled = false;
 
@@ -129,55 +126,64 @@ const Typing = (() => {
     scoreCorrect.textContent = correct;
     scoreSeen.textContent = correct + incorrect;
 
-    inputEl.focus();
+    meaningInput.focus();
   }
 
   function _submitAnswer() {
     if (_waiting) return;
 
-    const inputEl = document.getElementById('typing-input');
+    const meaningInput = document.getElementById('typing-meaning');
+    const readingInput = document.getElementById('typing-reading');
     const feedbackEl = document.getElementById('typing-feedback');
     const hintEl = document.getElementById('typing-hint');
     const submitBtn = document.getElementById('typing-submit');
     const card = Session.current();
 
-    if (!card || !inputEl) return;
+    if (!card || !meaningInput || !readingInput) return;
 
-    const userAnswer = inputEl.value.trim();
-    if (!userAnswer) return;
+    const meaningVal = meaningInput.value.trim();
+    const readingVal = readingInput.value.trim();
+    if (!meaningVal && !readingVal) return;
 
     _waiting = true;
-    inputEl.disabled = true;
+    meaningInput.disabled = true;
+    readingInput.disabled = true;
 
-    const isCorrect = _checkAnswer(userAnswer, card);
-    const allAnswers = _formatAnswers(card);
+    const meaningCorrect = _checkField(meaningInput.value, _getAcceptedMeanings(card));
+    const readingCorrect = _checkField(readingInput.value, _getAcceptedReadings(card));
+    const isCorrect = meaningCorrect && readingCorrect;
+
+    // Visual feedback per field
+    meaningInput.classList.add(meaningCorrect ? 'input-correct' : 'input-wrong');
+    readingInput.classList.add(readingCorrect ? 'input-correct' : 'input-wrong');
 
     if (isCorrect) {
-      inputEl.classList.add('input-correct');
       feedbackEl.className = 'typing-feedback feedback-correct';
       feedbackEl.innerHTML = `<span class="feedback-icon">&#10003;</span> Correct!`;
     } else {
-      inputEl.classList.add('input-wrong');
       feedbackEl.className = 'typing-feedback feedback-wrong';
-      feedbackEl.innerHTML = `<span class="feedback-icon">&#10007;</span> <strong>${allAnswers}</strong>`;
+      const parts = [];
+      if (!meaningCorrect) parts.push(`Meaning: <strong>${_formatMeanings(card)}</strong>`);
+      if (!readingCorrect) parts.push(`Reading: <strong>${_formatReadings(card)}</strong>`);
+      feedbackEl.innerHTML = `<span class="feedback-icon">&#10007;</span> ${parts.join(' · ')}`;
     }
 
     hintEl.textContent = 'Press Enter to continue';
     submitBtn.textContent = 'Next';
     submitBtn.disabled = false;
 
-    // Allow Enter to advance (one-shot to prevent double-advance)
     let _advanced = false;
     const advance = () => {
       if (_advanced) return;
       _advanced = true;
       if (_feedbackTimer) { clearTimeout(_feedbackTimer); _feedbackTimer = null; }
       const done = Session.recordAndAdvance(isCorrect);
-      if (!done) _renderCard();
+      if (done) return;
+      if (_onNext) _onNext();
     };
 
     submitBtn.onclick = advance;
-    _feedbackTimer = setTimeout(advance, FEEDBACK_DELAY + 1000);
+    _feedbackTimer = setTimeout(advance, FEEDBACK_DELAY);
   }
 
   function _onKey(e) {
@@ -185,7 +191,6 @@ const Typing = (() => {
     e.preventDefault();
 
     if (_waiting) {
-      // Advance immediately on Enter during feedback
       const submitBtn = document.getElementById('typing-submit');
       if (submitBtn?.onclick) submitBtn.onclick();
     } else {
@@ -193,10 +198,9 @@ const Typing = (() => {
     }
   }
 
-  function mount(mode, items, typingSubMode, onComplete) {
-    _subMode = typingSubMode || 'meaning';
+  function mount(mode, onNext) {
+    _onNext = onNext;
     _waiting = false;
-    Session.start(mode, items, onComplete, 'typing');
     _renderCard();
 
     document.addEventListener('keydown', _onKey);
@@ -214,6 +218,7 @@ const Typing = (() => {
       _feedbackTimer = null;
     }
     _waiting = false;
+    _onNext = null;
   }
 
   return { mount, unmount };

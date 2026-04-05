@@ -1,0 +1,5 @@
+# Environment secrets
+.env
+
+# Generated exercise data (can be large, local to each machine)
+data/exercises/

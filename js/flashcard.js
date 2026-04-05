@@ -1,10 +1,12 @@
 /**
  * flashcard.js — Card flip animation, keyboard shortcuts, rendering
  *
- * Delegates session state (deck, scoring, advancement) to Session module.
+ * Renders the current card from Session. Does not start the session itself.
+ * Calls onNext callback after grading to let app.js route to the next card.
  */
 const Flashcard = (() => {
   let _flipped = false;
+  let _onNext = null;
 
   // ---- Card HTML builders ----
   function _buildKanjiFront(card) {
@@ -97,7 +99,8 @@ const Flashcard = (() => {
 
   function _grade(correct) {
     const done = Session.recordAndAdvance(correct);
-    if (!done) _renderCard();
+    if (done) return; // onComplete already fired by Session
+    if (_onNext) _onNext();
   }
 
   function _onKey(e) {
@@ -106,8 +109,8 @@ const Flashcard = (() => {
     if (e.code === 'ArrowLeft') { if (_flipped) _grade(false); }
   }
 
-  function mount(mode, items, onComplete) {
-    Session.start(mode, items, onComplete, 'flashcard');
+  function mount(mode, onNext) {
+    _onNext = onNext;
     _flipped = false;
     _renderCard();
 
@@ -120,6 +123,7 @@ const Flashcard = (() => {
 
   function unmount() {
     document.removeEventListener('keydown', _onKey);
+    _onNext = null;
   }
 
   return { mount, unmount };

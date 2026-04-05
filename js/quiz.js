@@ -3,21 +3,20 @@
  *
  * Shows a prompt (kanji character or vocab word) and 4 answer choices.
  * Auto-grades on selection with visual feedback before advancing.
- * Keyboard: 1-4 to select, Enter/Space to advance after feedback.
+ * Keyboard: 1-4 to select.
+ *
+ * Does not start the session itself. Renders current card from Session.
  */
 const Quiz = (() => {
   const NUM_CHOICES = 4;
-  const FEEDBACK_DELAY = 900; // ms before auto-advancing
+  const FEEDBACK_DELAY = 900;
 
-  let _allPool = [];     // full data pool for generating distractors
-  let _waiting = false;  // true during feedback delay
+  let _allPool = [];
+  let _waiting = false;
   let _feedbackTimer = null;
+  let _onNext = null;
 
   function _getAnswer(item) {
-    const mode = Session.mode();
-    if (mode === 'kanji') {
-      return (item.meanings || []).join(', ');
-    }
     return (item.meanings || []).join(', ');
   }
 
@@ -33,12 +32,10 @@ const Quiz = (() => {
     return `Vocabulary · ${item.pos || ''}`;
   }
 
-  /** Pick distractors from the pool, excluding the correct item. */
   function _generateChoices(correctItem) {
     const correctAnswer = _getAnswer(correctItem);
     const correctId = Session.getId(correctItem);
 
-    // Collect unique wrong answers from the pool
     const pool = Session.shuffle(
       _allPool.filter(item => Session.getId(item) !== correctId)
     );
@@ -55,7 +52,6 @@ const Quiz = (() => {
       if (distractors.length >= NUM_CHOICES - 1) break;
     }
 
-    // Build choices array and shuffle
     const choices = [
       { text: correctAnswer, correct: true },
       ...distractors.map(d => ({ text: d, correct: false })),
@@ -91,7 +87,6 @@ const Quiz = (() => {
     scoreCorrect.textContent = correct;
     scoreSeen.textContent = correct + incorrect;
 
-    // Generate and render choices
     const choices = _generateChoices(card);
     choicesEl.innerHTML = '';
     choices.forEach((choice, i) => {
@@ -109,7 +104,6 @@ const Quiz = (() => {
     if (_waiting) return;
     _waiting = true;
 
-    // Reveal correct/wrong on all buttons
     const buttons = choicesEl.querySelectorAll('.quiz-choice');
     buttons.forEach(btn => {
       btn.classList.add('disabled');
@@ -125,10 +119,10 @@ const Quiz = (() => {
     const hintEl = document.getElementById('quiz-hint');
     hintEl.textContent = isCorrect ? 'Correct!' : 'Wrong — correct answer highlighted';
 
-    // Record and advance after delay
     _feedbackTimer = setTimeout(() => {
       const done = Session.recordAndAdvance(isCorrect);
-      if (!done) _renderCard();
+      if (done) return;
+      if (_onNext) _onNext();
     }, FEEDBACK_DELAY);
   }
 
@@ -147,10 +141,10 @@ const Quiz = (() => {
     }
   }
 
-  function mount(mode, items, allPool, onComplete) {
+  function mount(mode, allPool, onNext) {
     _allPool = allPool;
+    _onNext = onNext;
     _waiting = false;
-    Session.start(mode, items, onComplete, 'quiz');
     _renderCard();
     document.addEventListener('keydown', _onKey);
   }
@@ -162,6 +156,7 @@ const Quiz = (() => {
       _feedbackTimer = null;
     }
     _waiting = false;
+    _onNext = null;
   }
 
   return { mount, unmount };

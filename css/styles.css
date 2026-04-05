@@ -504,13 +504,7 @@ select:focus { border-color: var(--accent); }
   color: var(--text-muted);
   transition: transform var(--transition);
 }
-.srs-settings-body {
-  display: flex;
-  flex-direction: column;
-  gap: .75rem;
-  padding-top: .5rem;
-}
-.srs-settings-body.hidden { display: none; }
+.hidden { display: none !important; }
 .setting-input {
   font-family: inherit;
   background: var(--bg3);
@@ -1005,9 +999,14 @@ kbd {
 
 .typing-input-area {
   display: flex;
+  flex-direction: column;
   gap: .75rem;
-  align-items: center;
+  align-items: stretch;
   padding: 0 .5rem;
+}
+
+.typing-input-area .btn {
+  align-self: center;
 }
 
 .typing-input {
@@ -1238,9 +1237,9 @@ kbd {
   border-radius: 50%;
   display: inline-block;
 }
-.legend-known .legend-dot    { background: var(--correct); }
-.legend-learning .legend-dot { background: var(--accent); }
-.legend-new .legend-dot      { background: var(--bg3); border: 1px solid var(--border); }
+.legend-mastered .legend-dot   { background: var(--correct); }
+.legend-inprogress .legend-dot { background: var(--accent); }
+.legend-new .legend-dot        { background: var(--bg3); border: 1px solid var(--border); }
 
 /* Metrics + review schedule */
 .stats-metric-row {
@@ -1360,9 +1359,9 @@ kbd {
   border-radius: 999px;
   white-space: nowrap;
 }
-.status-known    { color: var(--correct); background: var(--correct-bg); }
-.status-learning { color: var(--accent);  background: var(--accent-glow); }
-.status-new      { color: var(--text-muted); background: var(--bg3); }
+.status-mastered    { color: var(--correct); background: var(--correct-bg); }
+.status-in-progress { color: var(--accent);  background: var(--accent-glow); }
+.status-unseen      { color: var(--text-muted); background: var(--bg3); }
 .item-row-accuracy {
   font-weight: 600;
   font-size: .8rem;
@@ -1374,6 +1373,46 @@ kbd {
   color: var(--text-muted);
   min-width: 5rem;
   text-align: right;
+}
+
+/* ============================================================
+   MODE BADGE (shown during study sessions)
+   ============================================================ */
+.mode-badge {
+  font-size: .68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: .2rem .6rem;
+  border-radius: 999px;
+  background: var(--accent-glow);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   TYPING DUAL INPUTS
+   ============================================================ */
+.typing-dual-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  flex: 1;
+}
+
+.typing-field {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.typing-field-label {
+  font-size: .72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
 }
 
 /* ============================================================
@@ -1419,6 +1458,5 @@ kbd {
   .item-row-accuracy, .item-row-date { display: none; }
   .item-list-controls { flex-direction: column; align-items: stretch; }
   .item-list-filters { justify-content: flex-start; }
-  .typing-input-area { flex-direction: column; }
   .typing-input { font-size: 1rem; }
 }

@@ -1,15 +1,16 @@
 /**
  * app.js — View router, wires everything together
+ *
+ * Unified study flow: cards progress through Flashcard → Quiz → Typing
+ * within a single session based on their mastery level.
  */
 (async () => {
   const view = document.getElementById('view');
   const nav = document.getElementById('nav');
 
   let _currentMode = null; // 'kanji' | 'vocab'
-  let _quizSize = 10;
+  let _quizSize = 5;
   let _filterMode = 'all';
-  let _studyMode = 'flashcard'; // 'flashcard' | 'quiz' | 'typing'
-  let _typingSubMode = 'meaning'; // 'meaning' | 'reading' | 'mixed'
 
   // ---- Utilities ----
   function cloneTemplate(id) {
@@ -80,27 +81,6 @@
     sizeEl.addEventListener('change', e => { _quizSize = parseInt(e.target.value, 10); });
     filterEl.addEventListener('change', e => { _filterMode = e.target.value; });
 
-    // Pill toggle for study mode
-    const modeToggle = document.getElementById('study-mode-toggle');
-    const modeRadio = modeToggle.querySelector(`input[value="${_studyMode}"]`);
-    if (modeRadio) modeRadio.checked = true;
-
-    // Typing sub-mode
-    const typingSubRow = document.getElementById('typing-sub-mode-row');
-    const typingSubEl = document.getElementById('typing-sub-mode');
-    typingSubEl.value = _typingSubMode;
-    typingSubEl.addEventListener('change', e => { _typingSubMode = e.target.value; });
-
-    function updateTypingSubVisibility() {
-      typingSubRow.classList.toggle('hidden', _studyMode !== 'typing');
-    }
-    updateTypingSubVisibility();
-
-    modeToggle.addEventListener('change', e => {
-      _studyMode = e.target.value;
-      updateTypingSubVisibility();
-    });
-
     // Progress stats
     const kanji = Data.getKanji();
     const vocab = Data.getVocab();
@@ -109,21 +89,15 @@
     const kStats = Progress.getStats(kanjiIds);
     const vStats = Progress.getStats(vocabIds);
 
-    document.getElementById('kanji-known').textContent = `${kStats.known} known`;
+    document.getElementById('kanji-known').textContent = `${kStats.mastered} mastered`;
     document.getElementById('kanji-total').textContent = `${kStats.total} total`;
-    document.getElementById('vocab-known').textContent = `${vStats.known} known`;
+    document.getElementById('vocab-known').textContent = `${vStats.mastered} mastered`;
     document.getElementById('vocab-total').textContent = `${vStats.total} total`;
 
-    const kPct = kStats.total ? (kStats.known / kStats.total) * 100 : 0;
-    const vPct = vStats.total ? (vStats.known / vStats.total) * 100 : 0;
+    const kPct = kStats.total ? (kStats.mastered / kStats.total) * 100 : 0;
+    const vPct = vStats.total ? (vStats.mastered / vStats.total) * 100 : 0;
     document.getElementById('kanji-progress-bar').style.width = kPct + '%';
     document.getElementById('vocab-progress-bar').style.width = vPct + '%';
-
-    // SRS due counts
-    const kanjiDue = Progress.getDueCount(kanjiIds);
-    const vocabDue = Progress.getDueCount(vocabIds);
-    document.getElementById('kanji-due').textContent = kanjiDue;
-    document.getElementById('vocab-due').textContent = vocabDue;
 
     document.getElementById('reset-progress').addEventListener('click', () => {
       if (confirm('Reset all progress? This cannot be undone.')) {
@@ -132,77 +106,11 @@
       }
     });
 
-    // --- SRS Settings panel ---
-    const srsToggle = document.getElementById('srs-settings-toggle');
-    const srsBody = document.getElementById('srs-settings-body');
-    const srsArrow = document.getElementById('srs-toggle-arrow');
-    srsToggle.addEventListener('click', () => {
-      const open = srsBody.classList.toggle('hidden');
-      srsArrow.style.transform = open ? '' : 'rotate(90deg)';
-    });
-
-    // Load current SRS settings into inputs
-    const srs = SrsSettings.getAll();
-    const srsRepeatEl = document.getElementById('srs-repeat-wrong');
-    const srsStepsEl = document.getElementById('srs-learning-steps');
-    const srsGradEl = document.getElementById('srs-graduate-interval');
-    const srsDefEaseEl = document.getElementById('srs-default-ease');
-    const srsMinEaseEl = document.getElementById('srs-min-ease');
-    const srsEaseBonusEl = document.getElementById('srs-ease-bonus');
-    const srsEasePenaltyEl = document.getElementById('srs-ease-penalty');
-    const srsKnownEl = document.getElementById('srs-known-threshold');
-
-    srsRepeatEl.checked = srs.repeatWrongCards;
-    srsStepsEl.value = (srs.learningSteps || []).join(', ');
-    srsGradEl.value = srs.graduateInterval;
-    srsDefEaseEl.value = srs.defaultEase;
-    srsMinEaseEl.value = srs.minEase;
-    srsEaseBonusEl.value = srs.easeBonus;
-    srsEasePenaltyEl.value = srs.easePenalty;
-    srsKnownEl.value = srs.knownThreshold;
-
-    function saveSrsSettings() {
-      const steps = srsStepsEl.value
-        .split(',')
-        .map(s => parseFloat(s.trim()))
-        .filter(n => !isNaN(n) && n > 0);
-      SrsSettings.set({
-        repeatWrongCards: srsRepeatEl.checked,
-        learningSteps: steps,
-        graduateInterval: parseInt(srsGradEl.value, 10) || 6,
-        defaultEase: parseFloat(srsDefEaseEl.value) || 2.5,
-        minEase: parseFloat(srsMinEaseEl.value) || 1.3,
-        easeBonus: parseFloat(srsEaseBonusEl.value) || 0.1,
-        easePenalty: parseFloat(srsEasePenaltyEl.value) || 0.2,
-        knownThreshold: parseInt(srsKnownEl.value, 10) || 3,
-      });
-    }
-
-    [srsRepeatEl, srsStepsEl, srsGradEl, srsDefEaseEl, srsMinEaseEl, srsEaseBonusEl, srsEasePenaltyEl, srsKnownEl]
-      .forEach(el => el.addEventListener('change', saveSrsSettings));
-
-    document.getElementById('srs-reset-defaults').addEventListener('click', () => {
-      SrsSettings.reset();
-      const d = SrsSettings.getDefaults();
-      srsRepeatEl.checked = d.repeatWrongCards;
-      srsStepsEl.value = d.learningSteps.join(', ');
-      srsGradEl.value = d.graduateInterval;
-      srsDefEaseEl.value = d.defaultEase;
-      srsMinEaseEl.value = d.minEase;
-      srsEaseBonusEl.value = d.easeBonus;
-      srsEasePenaltyEl.value = d.easePenalty;
-      srsKnownEl.value = d.knownThreshold;
-    });
-
     // Deck card buttons
     document.querySelectorAll('[data-action="study-kanji"]').forEach(el =>
       el.addEventListener('click', () => startStudy('kanji')));
     document.querySelectorAll('[data-action="study-vocab"]').forEach(el =>
       el.addEventListener('click', () => startStudy('vocab')));
-    document.querySelectorAll('[data-action="review-kanji"]').forEach(el =>
-      el.addEventListener('click', () => startSrsReview('kanji')));
-    document.querySelectorAll('[data-action="review-vocab"]').forEach(el =>
-      el.addEventListener('click', () => startSrsReview('vocab')));
   }
 
   // ---- Stats ----
@@ -224,25 +132,25 @@
     const vStats = Progress.getStats(vocabIds);
 
     function renderDonut(el, stats) {
-      const { known, learning, total } = stats;
+      const { mastered, inProgress, total } = stats;
       if (total === 0) return;
-      const pKnown = (known / total) * 100;
-      const pLearning = (learning / total) * 100;
+      const pMastered = (mastered / total) * 100;
+      const pInProgress = (inProgress / total) * 100;
       el.style.background = `conic-gradient(
-        var(--correct) 0% ${pKnown}%,
-        var(--accent) ${pKnown}% ${pKnown + pLearning}%,
-        var(--bg3) ${pKnown + pLearning}% 100%
+        var(--correct) 0% ${pMastered}%,
+        var(--accent) ${pMastered}% ${pMastered + pInProgress}%,
+        var(--bg3) ${pMastered + pInProgress}% 100%
       )`;
     }
 
     renderDonut(document.getElementById('stats-kanji-donut'), kStats);
     renderDonut(document.getElementById('stats-vocab-donut'), vStats);
 
-    document.getElementById('stats-kanji-known').textContent = kStats.known;
-    document.getElementById('stats-kanji-learning').textContent = kStats.learning;
+    document.getElementById('stats-kanji-mastered').textContent = kStats.mastered;
+    document.getElementById('stats-kanji-inprogress').textContent = kStats.inProgress;
     document.getElementById('stats-kanji-new').textContent = kStats.unseen;
-    document.getElementById('stats-vocab-known').textContent = vStats.known;
-    document.getElementById('stats-vocab-learning').textContent = vStats.learning;
+    document.getElementById('stats-vocab-mastered').textContent = vStats.mastered;
+    document.getElementById('stats-vocab-inprogress').textContent = vStats.inProgress;
     document.getElementById('stats-vocab-new').textContent = vStats.unseen;
 
     // --- Overall accuracy ---
@@ -257,16 +165,16 @@
     document.getElementById('stats-accuracy').textContent = totalAnswers > 0 ? accuracy + '%' : '—';
     document.getElementById('stats-studied').textContent = studied.length;
 
-    // --- Upcoming reviews ---
-    const reviews = Progress.getUpcomingReviews(allIds);
-    document.getElementById('stats-due-today').textContent = reviews.today;
-    document.getElementById('stats-due-tomorrow').textContent = reviews.tomorrow;
-    document.getElementById('stats-due-week').textContent = reviews.thisWeek;
-
-    // --- Hardest items (top 10 by lowest easeFactor with at least 1 wrong) ---
+    // --- Hardest items (top 10 by lowest accuracy with at least 1 wrong) ---
     const hardest = studied
       .filter(d => d.incorrectCount > 0)
-      .sort((a, b) => a.easeFactor - b.easeFactor || b.incorrectCount - a.incorrectCount)
+      .sort((a, b) => {
+        const aTotal = a.correctCount + a.incorrectCount;
+        const bTotal = b.correctCount + b.incorrectCount;
+        const aAcc = aTotal > 0 ? a.correctCount / aTotal : 0;
+        const bAcc = bTotal > 0 ? b.correctCount / bTotal : 0;
+        return aAcc - bAcc || b.incorrectCount - a.incorrectCount;
+      })
       .slice(0, 10);
 
     const hardestEl = document.getElementById('stats-hardest');
@@ -288,6 +196,12 @@
     const vocabDetails = Progress.getAllItemDetails(vocabIds).map(d => ({ ...d, type: 'vocab' }));
     const allItemsList = [...kanjiDetails, ...vocabDetails];
 
+    function _masteryLabel(level) {
+      if (level === 3) return 'mastered';
+      if (level >= 1) return 'in-progress';
+      return 'unseen';
+    }
+
     function renderItemList() {
       const typeFilter = document.getElementById('stats-type-filter').value;
       const statusFilter = document.getElementById('stats-status-filter').value;
@@ -297,8 +211,12 @@
       if (typeFilter !== 'all') filtered = filtered.filter(d => d.type === typeFilter);
       if (statusFilter === 'studied') {
         filtered = filtered.filter(d => d.lastSeen !== null);
-      } else if (statusFilter !== 'all') {
-        filtered = filtered.filter(d => d.status === statusFilter);
+      } else if (statusFilter === 'mastered') {
+        filtered = filtered.filter(d => d.masteryLevel === 3);
+      } else if (statusFilter === 'in-progress') {
+        filtered = filtered.filter(d => d.masteryLevel >= 1 && d.masteryLevel < 3);
+      } else if (statusFilter === 'unseen') {
+        filtered = filtered.filter(d => d.masteryLevel === 0);
       }
 
       filtered = [...filtered];
@@ -332,12 +250,13 @@
         const lastSeen = d.lastSeen
           ? new Date(d.lastSeen).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
           : '—';
-        const statusClass = `status-${d.status}`;
+        const label = _masteryLabel(d.masteryLevel);
+        const statusClass = `status-${label}`;
         const typeLabel = d.type === 'kanji' ? 'Kanji' : 'Vocab';
         return `<div class="item-row">
           <span class="item-row-char">${d.id}</span>
           <span class="item-row-name">${typeLabel}</span>
-          <span class="item-row-status ${statusClass}">${d.status}</span>
+          <span class="item-row-status ${statusClass}">${label}</span>
           <span class="item-row-accuracy">${acc}</span>
           <span class="item-row-date">${lastSeen}</span>
         </div>`;
@@ -364,50 +283,55 @@
     return { allItems, shuffled };
   }
 
-  // ---- Mount the appropriate study module ----
-  function _mountSession(mode, items, allItems) {
-    updateNav('study');
-    const onComplete = ({ correct, incorrect, total }) => {
-      showSummary({ correct, incorrect, total, mode });
-    };
+  // ---- Unified card routing ----
+  function _showCurrentCard() {
+    const studyMode = Session.currentMode();
+    if (!studyMode) return; // session complete (handled by onComplete)
 
-    if (_studyMode === 'quiz') {
-      if (allItems.length < 4) {
-        alert('Quiz mode needs at least 4 items to generate choices. Falling back to flashcard mode.');
+    Flashcard.unmount();
+    Quiz.unmount();
+    Typing.unmount();
+
+    if (studyMode === 'flashcard') {
+      const frag = cloneTemplate('tpl-flashcard');
+      setView(frag);
+      // Add mode badge
+      _addModeBadge('Flashcard');
+      document.querySelector('[data-action="home"]')?.addEventListener('click', showHome);
+      Flashcard.mount(_currentMode, _showCurrentCard);
+    } else if (studyMode === 'quiz') {
+      const allPool = Session.allPool();
+      if (allPool.length < 4) {
+        // Not enough items for quiz — fall back to flashcard
         const frag = cloneTemplate('tpl-flashcard');
         setView(frag);
+        _addModeBadge('Flashcard');
         document.querySelector('[data-action="home"]')?.addEventListener('click', showHome);
-        Flashcard.mount(mode, items, onComplete);
+        Flashcard.mount(_currentMode, _showCurrentCard);
         return;
       }
       const frag = cloneTemplate('tpl-quiz');
       setView(frag);
+      _addModeBadge('Quiz');
       document.querySelector('[data-action="home"]')?.addEventListener('click', showHome);
-      Quiz.mount(mode, items, allItems, onComplete);
-    } else if (_studyMode === 'typing') {
+      Quiz.mount(_currentMode, allPool, _showCurrentCard);
+    } else if (studyMode === 'typing') {
       const frag = cloneTemplate('tpl-typing');
       setView(frag);
+      _addModeBadge('Typing');
       document.querySelector('[data-action="home"]')?.addEventListener('click', showHome);
-      Typing.mount(mode, items, _typingSubMode, onComplete);
-    } else {
-      const frag = cloneTemplate('tpl-flashcard');
-      setView(frag);
-      document.querySelector('[data-action="home"]')?.addEventListener('click', showHome);
-      Flashcard.mount(mode, items, onComplete);
+      Typing.mount(_currentMode, _showCurrentCard);
     }
   }
 
-  // ---- Start SRS Review (only due items) ----
-  function startSrsReview(mode) {
-    _currentMode = mode;
-    const { allItems, shuffled } = _prepareItems(mode, 'srs');
-
-    if (shuffled.length === 0) {
-      alert('No cards due for review right now. Check back later!');
-      return;
-    }
-
-    _mountSession(mode, shuffled, allItems);
+  /** Add a mode indicator badge to the study header */
+  function _addModeBadge(label) {
+    const header = document.querySelector('.quiz-header');
+    if (!header) return;
+    const badge = document.createElement('span');
+    badge.className = 'mode-badge';
+    badge.textContent = label;
+    header.insertBefore(badge, header.firstChild.nextSibling);
   }
 
   // ---- Start Study ----
@@ -420,7 +344,13 @@
       return;
     }
 
-    _mountSession(mode, shuffled, allItems);
+    updateNav('study');
+    const onComplete = ({ correct, incorrect, total }) => {
+      showSummary({ correct, incorrect, total, mode });
+    };
+
+    Session.start(mode, shuffled, allItems, onComplete);
+    _showCurrentCard();
   }
 
   // ---- Summary ----
@@ -440,7 +370,6 @@
     document.getElementById('summary-bar').style.width = pct + '%';
     document.getElementById('summary-pct').textContent = `${pct}% correct`;
 
-    // Celebration for high scores
     const celebEl = document.getElementById('summary-celebration');
     if (pct === 100) {
       celebEl.textContent = 'Perfect!';
