@@ -7,10 +7,7 @@
  * Does not start the session itself. Renders current card from Session.
  */
 const Typing = (() => {
-  const FEEDBACK_DELAY = 2500;
-
   let _waiting = false;
-  let _feedbackTimer = null;
   let _onNext = null;
 
   /** Convert katakana to hiragana */
@@ -176,14 +173,12 @@ const Typing = (() => {
     const advance = () => {
       if (_advanced) return;
       _advanced = true;
-      if (_feedbackTimer) { clearTimeout(_feedbackTimer); _feedbackTimer = null; }
       const done = Session.recordAndAdvance(isCorrect);
       if (done) return;
       if (_onNext) _onNext();
     };
 
     submitBtn.onclick = advance;
-    _feedbackTimer = setTimeout(advance, FEEDBACK_DELAY);
   }
 
   function _onKey(e) {
@@ -213,10 +208,6 @@ const Typing = (() => {
 
   function unmount() {
     document.removeEventListener('keydown', _onKey);
-    if (_feedbackTimer) {
-      clearTimeout(_feedbackTimer);
-      _feedbackTimer = null;
-    }
     _waiting = false;
     _onNext = null;
   }

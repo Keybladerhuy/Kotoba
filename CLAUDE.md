@@ -50,7 +50,7 @@ Files follow the pattern `data/<level>-<type>.json`. The unique ID for each item
 
 | File | Contents |
 |------|----------|
-| `data/n1-kanji.json` | N1 kanji — `character`, `readings.on[]`, `readings.kun[]`, `meanings[]`, `examples[]` |
+| `data/n1-kanji.json` | N1 kanji — `character`, `readings.on[]`, `readings.kun[]`, `meanings[]`, `compounds[]` |
 | `data/n1-vocabulary.json` | N1 vocab — `word`, `reading`, `meanings[]`, `pos`, `example.ja/en` |
 | `data/n2-kanji.json` … `data/n5-kanji.json` | N2–N5 kanji (empty arrays, ready to populate) |
 | `data/n2-vocabulary.json` … `data/n5-vocabulary.json` | N2–N5 vocab (empty arrays, ready to populate) |

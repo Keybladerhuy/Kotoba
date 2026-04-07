@@ -64,6 +64,7 @@
     if (levelRadio) levelRadio.checked = true;
     levelToggle.addEventListener('change', async e => {
       Data.setLevel(e.target.value);
+      document.documentElement.dataset.level = e.target.value;
       showLoading();
       try {
         await Data.loadAll();
@@ -371,12 +372,37 @@
     document.getElementById('summary-pct').textContent = `${pct}% correct`;
 
     const celebEl = document.getElementById('summary-celebration');
+    let celebMsg = '';
+    let rainCount = 0;
     if (pct === 100) {
-      celebEl.textContent = 'Perfect!';
+      celebMsg = '完璧！';
+      rainCount = 32;
     } else if (pct >= 80) {
-      celebEl.textContent = 'Great job!';
+      celebMsg = 'よくできました！';
+      rainCount = 22;
     } else if (pct >= 60) {
-      celebEl.textContent = 'Nice effort!';
+      celebMsg = 'がんばった！';
+      rainCount = 12;
+    }
+    if (celebMsg) {
+      celebEl.innerHTML = `<span class="celebration-text">${celebMsg}</span>`;
+    }
+    if (rainCount > 0) {
+      const pool = ['一','二','三','四','五','日','月','火','水','木','金','山','川','人','心','力','空','花','海','光','道','夢','風','雨','雪'];
+      const rain = document.createElement('div');
+      rain.className = 'kanji-rain';
+      view.appendChild(rain);
+      for (let i = 0; i < rainCount; i++) {
+        const drop = document.createElement('span');
+        drop.className = 'kanji-drop';
+        drop.textContent = pool[Math.floor(Math.random() * pool.length)];
+        drop.style.setProperty('--x', `${Math.random() * 96}%`);
+        drop.style.setProperty('--delay', `${(Math.random() * 2.5).toFixed(2)}s`);
+        drop.style.setProperty('--dur', `${(1.8 + Math.random() * 2).toFixed(2)}s`);
+        drop.style.setProperty('--rot', `${Math.round(Math.random() * 30 - 15)}deg`);
+        rain.appendChild(drop);
+      }
+      setTimeout(() => rain.remove(), 6000);
     }
 
     document.getElementById('study-again-btn').addEventListener('click', () => startStudy(mode));
@@ -391,6 +417,7 @@
 
   // ---- Boot ----
   Theme.init();
+  document.documentElement.dataset.level = Data.getLevel();
   document.getElementById('stats-toggle').addEventListener('click', showStats);
   showLoading();
   try {

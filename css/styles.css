@@ -1,7 +1,7 @@
 /* ============================================================
    FONTS
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Shippori+Mincho:wght@400;700&display=swap');
 
 /* ============================================================
    THEME — DARK (default)
@@ -30,6 +30,7 @@
   --shadow:     0 8px 32px rgba(0, 0, 0, .4);
   --shadow-sm:  0 2px 12px rgba(0, 0, 0, .25);
   --transition: 0.2s cubic-bezier(.4, 0, .2, 1);
+  --pattern-dot: rgba(255,255,255,.04);
 
   /* Background blobs */
   --blob1: radial-gradient(600px circle at 20% 30%, rgba(167, 139, 250, .12), transparent 60%);
@@ -62,6 +63,31 @@
 
   --blob1: radial-gradient(600px circle at 20% 30%, rgba(124, 92, 191, .08), transparent 60%);
   --blob2: radial-gradient(500px circle at 80% 70%, rgba(217, 72, 136, .06), transparent 60%);
+  --pattern-dot: rgba(0,0,0,.05);
+}
+
+/* ============================================================
+   LEVEL ACCENT COLORS — override --accent per JLPT level
+   ============================================================ */
+html[data-level="n2"] {
+  --accent:      #60a5fa;
+  --accent2:     #818cf8;
+  --accent-glow: rgba(96, 165, 250, .18);
+}
+html[data-level="n3"] {
+  --accent:      #2dd4bf;
+  --accent2:     #34d399;
+  --accent-glow: rgba(45, 212, 191, .18);
+}
+html[data-level="n4"] {
+  --accent:      #22d3ee;
+  --accent2:     #60a5fa;
+  --accent-glow: rgba(34, 211, 238, .18);
+}
+html[data-level="n5"] {
+  --accent:      #f59e0b;
+  --accent2:     #f97316;
+  --accent-glow: rgba(245, 158, 11, .18);
 }
 
 /* ============================================================
@@ -73,10 +99,12 @@ html, body {
   height: 100%;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 16px;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, var(--pattern-dot) 1.5px, transparent 1.5px);
+  background-size: 30px 30px;
   color: var(--text);
   line-height: 1.6;
-  transition: background .4s ease, color .3s ease;
+  transition: background-color .4s ease, color .3s ease;
 }
 
 /* ============================================================
@@ -211,9 +239,28 @@ main {
   80%      { transform: translateX(4px); }
 }
 
-@keyframes pulse-bar {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: .7; }
+@keyframes shimmer {
+  0%   { background-position: 150% center; }
+  100% { background-position: -150% center; }
+}
+
+@keyframes inkReveal {
+  0%   { transform: scale(.3); opacity: .45; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes btnBounce {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(.9); }
+  60%  { transform: scale(1.08); }
+  80%  { transform: scale(.97); }
+  100% { transform: scale(1); }
+}
+
+@keyframes kanjifall {
+  0%   { transform: translateY(-2rem) rotate(var(--rot, 0deg)); opacity: .8; }
+  80%  { opacity: .35; }
+  100% { transform: translateY(105vh) rotate(calc(var(--rot, 0deg) + 20deg)); opacity: 0; }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -317,6 +364,9 @@ main {
   filter: brightness(1.1);
   transform: translateY(-1px);
 }
+
+.btn-correct.anim-bounce { animation: btnBounce .35s ease both; }
+.btn-wrong.anim-shake    { animation: shake .4s ease both; }
 
 .btn-lg { padding: .75rem 2rem; font-size: 1rem; border-radius: 12px; }
 
@@ -427,14 +477,26 @@ main {
 .progress-bar, .mini-progress-bar, .summary-bar {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  background: linear-gradient(
+    90deg,
+    var(--accent) 0%,
+    var(--accent2) 35%,
+    rgba(255,255,255,.38) 50%,
+    var(--accent2) 65%,
+    var(--accent) 100%
+  );
+  background-size: 200% 100%;
   width: 0%;
   transition: width .4s ease;
 }
 
-/* Pulse animation on active session progress bars */
+/* Shimmer on active session progress bars */
 .mini-progress-bar {
-  animation: pulse-bar 2s ease-in-out infinite;
+  animation: shimmer 2.5s linear infinite;
+}
+
+.progress-bar {
+  animation: shimmer 3s linear infinite;
 }
 
 .summary-bar-wrap {
@@ -745,12 +807,34 @@ input[type="checkbox"] {
   justify-content: flex-start;
 }
 
+/* Ink-drop ripple when card flips to reveal back */
+.card-back::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+}
+.card-inner.flipped .card-back::before {
+  animation: inkReveal .65s ease-out both;
+}
+
 /* Front content */
 .card-character {
-  font-size: 5rem;
+  font-size: 6.5rem;
   line-height: 1.1;
   margin-bottom: .5rem;
-  font-family: 'Noto Serif JP', 'Yu Mincho', serif;
+  font-family: 'Shippori Mincho', 'Noto Serif JP', 'Yu Mincho', serif;
+  text-shadow:
+    0 3px 12px rgba(0,0,0,.28),
+    0 1px 0 rgba(0,0,0,.12);
+  letter-spacing: -.02em;
 }
 
 .card-label {
@@ -776,7 +860,8 @@ input[type="checkbox"] {
 
 .back-section p, .back-section ul { font-size: .95rem; color: var(--text); }
 .back-section ul { list-style: none; padding: 0; }
-.back-section ul li::before { content: ''; color: var(--accent); }
+.back-section ul li::before { content: none; }
+.example-list li::before { content: none; }
 
 .reading-chip {
   display: inline-block;
@@ -818,6 +903,10 @@ input[type="checkbox"] {
 .hint {
   font-size: .78rem;
   color: var(--text-muted);
+}
+
+.quiz-continue-btn {
+  margin-top: 1rem;
 }
 
 kbd {
@@ -896,11 +985,15 @@ kbd {
 }
 
 .quiz-prompt-text {
-  font-size: 4.5rem;
+  font-size: 5.5rem;
   line-height: 1.15;
-  font-family: 'Noto Serif JP', 'Yu Mincho', serif;
+  font-family: 'Shippori Mincho', 'Noto Serif JP', 'Yu Mincho', serif;
   position: relative;
   z-index: 1;
+  text-shadow:
+    0 3px 12px rgba(0,0,0,.28),
+    0 1px 0 rgba(0,0,0,.12);
+  letter-spacing: -.02em;
 }
 
 .quiz-choices {
@@ -1446,10 +1539,10 @@ kbd {
   main { padding: 1rem; }
   header { padding: .75rem 1rem; }
   .deck-cards { grid-template-columns: 1fr; }
-  .card-character { font-size: 3.5rem; }
+  .card-character { font-size: 4.5rem; }
   .grade-buttons { gap: .75rem; }
   .btn-lg { padding: .65rem 1.5rem; }
-  .quiz-prompt-text { font-size: 3rem; }
+  .quiz-prompt-text { font-size: 4rem; }
   .quiz-prompt-area { padding: 2rem 1.5rem; }
   .pill-toggle label { padding: .3rem .65rem; font-size: .78rem; }
   .stats-overview { grid-template-columns: 1fr; }
@@ -1459,4 +1552,39 @@ kbd {
   .item-list-controls { flex-direction: column; align-items: stretch; }
   .item-list-filters { justify-content: flex-start; }
   .typing-input { font-size: 1rem; }
+}
+
+/* ============================================================
+   KANJI RAIN — summary celebration
+   ============================================================ */
+.kanji-rain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 200;
+}
+
+.kanji-drop {
+  position: absolute;
+  top: -3rem;
+  left: var(--x, 50%);
+  font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+  font-size: clamp(1.1rem, 2.5vw, 2rem);
+  color: var(--accent);
+  opacity: 0;
+  animation: kanjifall var(--dur, 2s) var(--delay, 0s) ease-in forwards;
+  will-change: transform, opacity;
+}
+
+/* Summary celebration message */
+.celebration-text {
+  font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  animation: popIn .5s ease both;
 }

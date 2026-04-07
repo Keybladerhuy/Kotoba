@@ -20,18 +20,17 @@ const Flashcard = (() => {
     const on = (card.readings?.on || []).map(r => `<span class="reading-chip">${r}</span>`).join('');
     const kun = (card.readings?.kun || []).map(r => `<span class="reading-chip">${r}</span>`).join('');
     const meanings = (card.meanings || []).join(', ');
-    const meaningsArr = card.meanings || [];
-    const examplesArr = card.examples || [];
-    const examples = examplesArr.map((e, i) => {
-      const meaning = meaningsArr[i] ? `<span class="example-meaning">${meaningsArr[i]}</span>` : '';
-      return `<li><span class="example-word">${e}</span>${meaning}</li>`;
+    const compounds = (card.compounds || []).map(c => {
+      const word = typeof c === 'string' ? c : c.word;
+      const meaning = typeof c === 'object' && c.meaning ? ` <span class="example-meaning">${c.meaning}</span>` : '';
+      return `<li><span class="example-word">${word}</span>${meaning}</li>`;
     }).join('');
     return `
       <div class="back-section"><h4>Character</h4><p style="font-size:2rem">${card.character}</p></div>
       ${on ? `<div class="back-section"><h4>On Reading</h4><p>${on}</p></div>` : ''}
       ${kun ? `<div class="back-section"><h4>Kun Reading</h4><p>${kun}</p></div>` : ''}
       <div class="back-section"><h4>Meanings</h4><p>${meanings}</p></div>
-      ${examples ? `<div class="back-section"><h4>Examples</h4><ul class="example-list">${examples}</ul></div>` : ''}
+      ${compounds ? `<div class="back-section"><h4>Compounds</h4><ul class="example-list">${compounds}</ul></div>` : ''}
     `;
   }
 
@@ -97,6 +96,13 @@ const Flashcard = (() => {
     document.getElementById('card-actions-grade').classList.remove('hidden');
   }
 
+  function _triggerAnim(el, cls) {
+    el.classList.remove(cls);
+    void el.offsetWidth; // force reflow to restart animation
+    el.classList.add(cls);
+    el.addEventListener('animationend', () => el.classList.remove(cls), { once: true });
+  }
+
   function _grade(correct) {
     const done = Session.recordAndAdvance(correct);
     if (done) return; // onComplete already fired by Session
@@ -116,8 +122,14 @@ const Flashcard = (() => {
 
     document.getElementById('flashcard').addEventListener('click', _flip);
     document.getElementById('flip-btn').addEventListener('click', _flip);
-    document.getElementById('correct-btn').addEventListener('click', () => _grade(true));
-    document.getElementById('wrong-btn').addEventListener('click', () => _grade(false));
+    document.getElementById('correct-btn').addEventListener('click', () => {
+      _triggerAnim(document.getElementById('correct-btn'), 'anim-bounce');
+      _grade(true);
+    });
+    document.getElementById('wrong-btn').addEventListener('click', () => {
+      _triggerAnim(document.getElementById('wrong-btn'), 'anim-shake');
+      _grade(false);
+    });
     document.addEventListener('keydown', _onKey);
   }
 

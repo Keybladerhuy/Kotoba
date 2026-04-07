@@ -9,7 +9,6 @@
  */
 const Quiz = (() => {
   const NUM_CHOICES = 4;
-  const FEEDBACK_DELAY = 900;
 
   let _allPool = [];
   let _waiting = false;
@@ -117,17 +116,39 @@ const Quiz = (() => {
     }
 
     const hintEl = document.getElementById('quiz-hint');
-    hintEl.textContent = isCorrect ? 'Correct!' : 'Wrong — correct answer highlighted';
 
-    _feedbackTimer = setTimeout(() => {
-      const done = Session.recordAndAdvance(isCorrect);
-      if (done) return;
-      if (_onNext) _onNext();
-    }, FEEDBACK_DELAY);
+    if (isCorrect) {
+      hintEl.textContent = 'Correct!';
+      _feedbackTimer = setTimeout(() => {
+        const done = Session.recordAndAdvance(isCorrect);
+        if (done) return;
+        if (_onNext) _onNext();
+      }, 900);
+    } else {
+      hintEl.textContent = 'Wrong — correct answer highlighted';
+      const continueBtn = document.createElement('button');
+      continueBtn.className = 'btn btn-primary quiz-continue-btn';
+      continueBtn.textContent = 'Continue';
+      continueBtn.addEventListener('click', () => {
+        const done = Session.recordAndAdvance(isCorrect);
+        if (done) return;
+        if (_onNext) _onNext();
+      });
+      hintEl.insertAdjacentElement('afterend', continueBtn);
+    }
   }
 
   function _onKey(e) {
-    if (_waiting) return;
+    if (_waiting) {
+      if (e.key === ' ' || e.key === 'ArrowRight') {
+        const continueBtn = document.querySelector('.quiz-continue-btn');
+        if (continueBtn) {
+          e.preventDefault();
+          continueBtn.click();
+        }
+      }
+      return;
+    }
 
     const keyNum = parseInt(e.key, 10);
     if (keyNum >= 1 && keyNum <= NUM_CHOICES) {

@@ -17,7 +17,10 @@ Array of kanji objects with the following schema:
       "kun": ["うれ.える", "うれ.い"]
     },
     "meanings": ["melancholy", "grief"],
-    "examples": ["憂鬱", "憂慮"]
+    "compounds": [
+      { "word": "憂鬱", "meaning": "depression; melancholy" },
+      { "word": "憂慮", "meaning": "concern; anxiety" }
+    ]
   }
 ]
 ```
@@ -28,7 +31,7 @@ Array of kanji objects with the following schema:
 | `readings.on` | string[] | ✓ | On-yomi readings (can be empty array) |
 | `readings.kun` | string[] | ✓ | Kun-yomi readings (can be empty array) |
 | `meanings` | string[] | ✓ | English meanings |
-| `examples` | string[] | | Example words using this kanji |
+| `compounds` | object[] | | Compound words using this kanji — each entry is `{ word, meaning }` (plain strings also accepted for backwards compatibility) |
 
 ---
 

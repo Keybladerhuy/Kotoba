@@ -1,1 +1,962 @@
-[]
+[
+  {
+    "character": "一",
+    "readings": { "on": ["イチ", "イツ"], "kun": ["ひと", "ひと.つ"] },
+    "meanings": ["one"],
+    "compounds": [
+      { "word": "一つ", "meaning": "one thing" },
+      { "word": "一人", "meaning": "one person" },
+      { "word": "一日", "meaning": "one day; January 1st" }
+    ]
+  },
+  {
+    "character": "二",
+    "readings": { "on": ["ニ", "ジ"], "kun": ["ふた", "ふた.つ"] },
+    "meanings": ["two"],
+    "compounds": [
+      { "word": "二つ", "meaning": "two things" },
+      { "word": "二人", "meaning": "two people" },
+      { "word": "二月", "meaning": "February" }
+    ]
+  },
+  {
+    "character": "三",
+    "readings": { "on": ["サン"], "kun": ["み", "み.つ", "みっ.つ"] },
+    "meanings": ["three"],
+    "compounds": [
+      { "word": "三つ", "meaning": "three things" },
+      { "word": "三人", "meaning": "three people" },
+      { "word": "三月", "meaning": "March" }
+    ]
+  },
+  {
+    "character": "四",
+    "readings": { "on": ["シ"], "kun": ["よ", "よ.つ", "よっ.つ", "よん"] },
+    "meanings": ["four"],
+    "compounds": [
+      { "word": "四つ", "meaning": "four things" },
+      { "word": "四月", "meaning": "April" },
+      { "word": "四人", "meaning": "four people" }
+    ]
+  },
+  {
+    "character": "五",
+    "readings": { "on": ["ゴ"], "kun": ["いつ", "いつ.つ"] },
+    "meanings": ["five"],
+    "compounds": [
+      { "word": "五つ", "meaning": "five things" },
+      { "word": "五月", "meaning": "May" },
+      { "word": "五人", "meaning": "five people" }
+    ]
+  },
+  {
+    "character": "六",
+    "readings": { "on": ["ロク"], "kun": ["む", "む.つ", "むっ.つ", "むい"] },
+    "meanings": ["six"],
+    "compounds": [
+      { "word": "六つ", "meaning": "six things" },
+      { "word": "六月", "meaning": "June" },
+      { "word": "六人", "meaning": "six people" }
+    ]
+  },
+  {
+    "character": "七",
+    "readings": { "on": ["シチ"], "kun": ["なな", "なな.つ", "なの"] },
+    "meanings": ["seven"],
+    "compounds": [
+      { "word": "七つ", "meaning": "seven things" },
+      { "word": "七月", "meaning": "July" },
+      { "word": "七人", "meaning": "seven people" }
+    ]
+  },
+  {
+    "character": "八",
+    "readings": { "on": ["ハチ"], "kun": ["や", "や.つ", "やっ.つ", "よう"] },
+    "meanings": ["eight"],
+    "compounds": [
+      { "word": "八つ", "meaning": "eight things" },
+      { "word": "八月", "meaning": "August" },
+      { "word": "八百", "meaning": "eight hundred" }
+    ]
+  },
+  {
+    "character": "九",
+    "readings": { "on": ["キュウ", "ク"], "kun": ["ここの", "ここの.つ"] },
+    "meanings": ["nine"],
+    "compounds": [
+      { "word": "九つ", "meaning": "nine things" },
+      { "word": "九月", "meaning": "September" },
+      { "word": "九人", "meaning": "nine people" }
+    ]
+  },
+  {
+    "character": "十",
+    "readings": { "on": ["ジュウ", "ジッ"], "kun": ["とお", "と"] },
+    "meanings": ["ten"],
+    "compounds": [
+      { "word": "十月", "meaning": "October" },
+      { "word": "二十", "meaning": "twenty" },
+      { "word": "十分", "meaning": "enough; ten minutes" }
+    ]
+  },
+  {
+    "character": "百",
+    "readings": { "on": ["ヒャク"], "kun": [] },
+    "meanings": ["hundred"],
+    "compounds": [
+      { "word": "三百", "meaning": "three hundred" },
+      { "word": "百円", "meaning": "100 yen" },
+      { "word": "八百", "meaning": "eight hundred" }
+    ]
+  },
+  {
+    "character": "千",
+    "readings": { "on": ["セン"], "kun": ["ち"] },
+    "meanings": ["thousand"],
+    "compounds": [
+      { "word": "二千", "meaning": "two thousand" },
+      { "word": "千円", "meaning": "1000 yen" },
+      { "word": "千年", "meaning": "a thousand years" }
+    ]
+  },
+  {
+    "character": "万",
+    "readings": { "on": ["マン", "バン"], "kun": [] },
+    "meanings": ["ten thousand"],
+    "compounds": [
+      { "word": "一万", "meaning": "ten thousand" },
+      { "word": "万円", "meaning": "ten thousand yen" },
+      { "word": "万国", "meaning": "all nations" }
+    ]
+  },
+  {
+    "character": "円",
+    "readings": { "on": ["エン"], "kun": ["まる.い"] },
+    "meanings": ["yen", "circle", "round"],
+    "compounds": [
+      { "word": "百円", "meaning": "100 yen" },
+      { "word": "円形", "meaning": "circular shape" },
+      { "word": "円安", "meaning": "weak yen" }
+    ]
+  },
+  {
+    "character": "年",
+    "readings": { "on": ["ネン"], "kun": ["とし"] },
+    "meanings": ["year"],
+    "compounds": [
+      { "word": "今年", "meaning": "this year" },
+      { "word": "来年", "meaning": "next year" },
+      { "word": "去年", "meaning": "last year" }
+    ]
+  },
+  {
+    "character": "月",
+    "readings": { "on": ["ゲツ", "ガツ"], "kun": ["つき"] },
+    "meanings": ["moon", "month"],
+    "compounds": [
+      { "word": "月曜日", "meaning": "Monday" },
+      { "word": "今月", "meaning": "this month" },
+      { "word": "月光", "meaning": "moonlight" }
+    ]
+  },
+  {
+    "character": "日",
+    "readings": { "on": ["ニチ", "ジツ"], "kun": ["ひ", "か"] },
+    "meanings": ["sun", "day"],
+    "compounds": [
+      { "word": "今日", "meaning": "today" },
+      { "word": "日曜日", "meaning": "Sunday" },
+      { "word": "毎日", "meaning": "every day" }
+    ]
+  },
+  {
+    "character": "時",
+    "readings": { "on": ["ジ"], "kun": ["とき"] },
+    "meanings": ["time", "hour", "o'clock"],
+    "compounds": [
+      { "word": "時間", "meaning": "time; hour" },
+      { "word": "何時", "meaning": "what time" },
+      { "word": "時々", "meaning": "sometimes" }
+    ]
+  },
+  {
+    "character": "分",
+    "readings": { "on": ["ブン", "フン"], "kun": ["わ.かる", "わ.ける"] },
+    "meanings": ["minute", "part", "understand"],
+    "compounds": [
+      { "word": "五分", "meaning": "five minutes" },
+      { "word": "分かる", "meaning": "to understand" },
+      { "word": "自分", "meaning": "oneself" }
+    ]
+  },
+  {
+    "character": "半",
+    "readings": { "on": ["ハン"], "kun": ["なか.ば"] },
+    "meanings": ["half"],
+    "compounds": [
+      { "word": "半分", "meaning": "half" },
+      { "word": "一時半", "meaning": "1:30" },
+      { "word": "半年", "meaning": "half a year" }
+    ]
+  },
+  {
+    "character": "週",
+    "readings": { "on": ["シュウ"], "kun": [] },
+    "meanings": ["week"],
+    "compounds": [
+      { "word": "今週", "meaning": "this week" },
+      { "word": "来週", "meaning": "next week" },
+      { "word": "毎週", "meaning": "every week" }
+    ]
+  },
+  {
+    "character": "火",
+    "readings": { "on": ["カ"], "kun": ["ひ", "ほ"] },
+    "meanings": ["fire"],
+    "compounds": [
+      { "word": "火曜日", "meaning": "Tuesday" },
+      { "word": "火事", "meaning": "fire; conflagration" },
+      { "word": "花火", "meaning": "fireworks" }
+    ]
+  },
+  {
+    "character": "水",
+    "readings": { "on": ["スイ"], "kun": ["みず"] },
+    "meanings": ["water"],
+    "compounds": [
+      { "word": "水曜日", "meaning": "Wednesday" },
+      { "word": "水道", "meaning": "water supply; tap water" },
+      { "word": "お水", "meaning": "water (polite)" }
+    ]
+  },
+  {
+    "character": "木",
+    "readings": { "on": ["モク", "ボク"], "kun": ["き", "こ"] },
+    "meanings": ["tree", "wood"],
+    "compounds": [
+      { "word": "木曜日", "meaning": "Thursday" },
+      { "word": "木の葉", "meaning": "leaf; foliage" },
+      { "word": "木材", "meaning": "lumber; timber" }
+    ]
+  },
+  {
+    "character": "金",
+    "readings": { "on": ["キン", "コン"], "kun": ["かね", "かな"] },
+    "meanings": ["gold", "money", "Friday"],
+    "compounds": [
+      { "word": "金曜日", "meaning": "Friday" },
+      { "word": "お金", "meaning": "money" },
+      { "word": "金色", "meaning": "golden color" }
+    ]
+  },
+  {
+    "character": "土",
+    "readings": { "on": ["ド", "ト"], "kun": ["つち"] },
+    "meanings": ["earth", "soil", "Saturday"],
+    "compounds": [
+      { "word": "土曜日", "meaning": "Saturday" },
+      { "word": "土地", "meaning": "land; plot of land" },
+      { "word": "土台", "meaning": "foundation; base" }
+    ]
+  },
+  {
+    "character": "山",
+    "readings": { "on": ["サン"], "kun": ["やま"] },
+    "meanings": ["mountain"],
+    "compounds": [
+      { "word": "富士山", "meaning": "Mt. Fuji" },
+      { "word": "山田", "meaning": "Yamada (surname)" },
+      { "word": "登山", "meaning": "mountain climbing" }
+    ]
+  },
+  {
+    "character": "川",
+    "readings": { "on": ["セン"], "kun": ["かわ"] },
+    "meanings": ["river"],
+    "compounds": [
+      { "word": "小川", "meaning": "stream; brook" },
+      { "word": "川岸", "meaning": "riverbank" },
+      { "word": "川田", "meaning": "Kawada (surname)" }
+    ]
+  },
+  {
+    "character": "田",
+    "readings": { "on": ["デン"], "kun": ["た"] },
+    "meanings": ["rice field", "paddy"],
+    "compounds": [
+      { "word": "田んぼ", "meaning": "rice paddy" },
+      { "word": "田中", "meaning": "Tanaka (surname)" },
+      { "word": "水田", "meaning": "flooded rice field" }
+    ]
+  },
+  {
+    "character": "上",
+    "readings": { "on": ["ジョウ", "ショウ"], "kun": ["うえ", "うわ", "かみ", "あ.げる", "あ.がる", "のぼ.る"] },
+    "meanings": ["above", "up", "on top"],
+    "compounds": [
+      { "word": "上手", "meaning": "skilled; good at" },
+      { "word": "上る", "meaning": "to go up; to climb" },
+      { "word": "屋上", "meaning": "rooftop" }
+    ]
+  },
+  {
+    "character": "下",
+    "readings": { "on": ["カ", "ゲ"], "kun": ["した", "しも", "さ.げる", "さ.がる", "くだ.る", "お.りる"] },
+    "meanings": ["below", "down", "under"],
+    "compounds": [
+      { "word": "下手", "meaning": "unskilled; bad at" },
+      { "word": "下る", "meaning": "to go down; to descend" },
+      { "word": "地下", "meaning": "underground; basement" }
+    ]
+  },
+  {
+    "character": "中",
+    "readings": { "on": ["チュウ"], "kun": ["なか"] },
+    "meanings": ["middle", "inside", "during"],
+    "compounds": [
+      { "word": "中学校", "meaning": "middle school" },
+      { "word": "中国", "meaning": "China" },
+      { "word": "一日中", "meaning": "all day long" }
+    ]
+  },
+  {
+    "character": "大",
+    "readings": { "on": ["ダイ", "タイ"], "kun": ["おお", "おお.きい"] },
+    "meanings": ["big", "large"],
+    "compounds": [
+      { "word": "大きい", "meaning": "big; large" },
+      { "word": "大学", "meaning": "university" },
+      { "word": "大人", "meaning": "adult" }
+    ]
+  },
+  {
+    "character": "小",
+    "readings": { "on": ["ショウ"], "kun": ["ちい.さい", "こ", "お"] },
+    "meanings": ["small", "little"],
+    "compounds": [
+      { "word": "小さい", "meaning": "small; little" },
+      { "word": "小学校", "meaning": "elementary school" },
+      { "word": "小説", "meaning": "novel; fiction" }
+    ]
+  },
+  {
+    "character": "外",
+    "readings": { "on": ["ガイ", "ゲ"], "kun": ["そと", "ほか", "はず.れる"] },
+    "meanings": ["outside", "other"],
+    "compounds": [
+      { "word": "外国", "meaning": "foreign country" },
+      { "word": "外れる", "meaning": "to come off; to miss" },
+      { "word": "海外", "meaning": "overseas; abroad" }
+    ]
+  },
+  {
+    "character": "東",
+    "readings": { "on": ["トウ"], "kun": ["ひがし"] },
+    "meanings": ["east"],
+    "compounds": [
+      { "word": "東京", "meaning": "Tokyo" },
+      { "word": "東口", "meaning": "east exit" },
+      { "word": "東側", "meaning": "east side" }
+    ]
+  },
+  {
+    "character": "西",
+    "readings": { "on": ["セイ", "サイ"], "kun": ["にし"] },
+    "meanings": ["west"],
+    "compounds": [
+      { "word": "西口", "meaning": "west exit" },
+      { "word": "関西", "meaning": "Kansai region" },
+      { "word": "西洋", "meaning": "the West; Western countries" }
+    ]
+  },
+  {
+    "character": "南",
+    "readings": { "on": ["ナン", "ナ"], "kun": ["みなみ"] },
+    "meanings": ["south"],
+    "compounds": [
+      { "word": "南口", "meaning": "south exit" },
+      { "word": "南国", "meaning": "southern land; tropics" },
+      { "word": "南米", "meaning": "South America" }
+    ]
+  },
+  {
+    "character": "北",
+    "readings": { "on": ["ホク"], "kun": ["きた"] },
+    "meanings": ["north"],
+    "compounds": [
+      { "word": "北口", "meaning": "north exit" },
+      { "word": "北海道", "meaning": "Hokkaido" },
+      { "word": "北米", "meaning": "North America" }
+    ]
+  },
+  {
+    "character": "右",
+    "readings": { "on": ["ウ", "ユウ"], "kun": ["みぎ"] },
+    "meanings": ["right"],
+    "compounds": [
+      { "word": "右手", "meaning": "right hand" },
+      { "word": "右側", "meaning": "right side" },
+      { "word": "右折", "meaning": "turning right" }
+    ]
+  },
+  {
+    "character": "左",
+    "readings": { "on": ["サ"], "kun": ["ひだり"] },
+    "meanings": ["left"],
+    "compounds": [
+      { "word": "左手", "meaning": "left hand" },
+      { "word": "左側", "meaning": "left side" },
+      { "word": "左折", "meaning": "turning left" }
+    ]
+  },
+  {
+    "character": "前",
+    "readings": { "on": ["ゼン"], "kun": ["まえ"] },
+    "meanings": ["before", "in front of"],
+    "compounds": [
+      { "word": "名前", "meaning": "name" },
+      { "word": "午前", "meaning": "morning; AM" },
+      { "word": "前回", "meaning": "last time; previous" }
+    ]
+  },
+  {
+    "character": "後",
+    "readings": { "on": ["ゴ", "コウ"], "kun": ["あと", "うし.ろ", "のち", "おく.れる"] },
+    "meanings": ["behind", "after", "later"],
+    "compounds": [
+      { "word": "後ろ", "meaning": "behind; back" },
+      { "word": "午後", "meaning": "afternoon; PM" },
+      { "word": "後で", "meaning": "later; afterwards" }
+    ]
+  },
+  {
+    "character": "間",
+    "readings": { "on": ["カン", "ケン"], "kun": ["あいだ", "ま"] },
+    "meanings": ["interval", "between", "space"],
+    "compounds": [
+      { "word": "時間", "meaning": "time; hour" },
+      { "word": "人間", "meaning": "human being" },
+      { "word": "週間", "meaning": "week (duration)" }
+    ]
+  },
+  {
+    "character": "人",
+    "readings": { "on": ["ジン", "ニン"], "kun": ["ひと"] },
+    "meanings": ["person", "people"],
+    "compounds": [
+      { "word": "日本人", "meaning": "Japanese person" },
+      { "word": "一人", "meaning": "one person; alone" },
+      { "word": "人間", "meaning": "human being" }
+    ]
+  },
+  {
+    "character": "口",
+    "readings": { "on": ["コウ", "ク"], "kun": ["くち"] },
+    "meanings": ["mouth", "opening"],
+    "compounds": [
+      { "word": "入口", "meaning": "entrance" },
+      { "word": "出口", "meaning": "exit" },
+      { "word": "口座", "meaning": "bank account" }
+    ]
+  },
+  {
+    "character": "手",
+    "readings": { "on": ["シュ"], "kun": ["て", "た"] },
+    "meanings": ["hand"],
+    "compounds": [
+      { "word": "上手", "meaning": "skilled; good at" },
+      { "word": "手紙", "meaning": "letter (correspondence)" },
+      { "word": "手伝う", "meaning": "to help; to assist" }
+    ]
+  },
+  {
+    "character": "目",
+    "readings": { "on": ["モク", "ボク"], "kun": ["め", "ま"] },
+    "meanings": ["eye"],
+    "compounds": [
+      { "word": "目的", "meaning": "purpose; goal" },
+      { "word": "一番目", "meaning": "first; number one" },
+      { "word": "目立つ", "meaning": "to stand out; to be conspicuous" }
+    ]
+  },
+  {
+    "character": "耳",
+    "readings": { "on": ["ジ"], "kun": ["みみ"] },
+    "meanings": ["ear"],
+    "compounds": [
+      { "word": "耳鼻科", "meaning": "ENT (ear, nose & throat)" },
+      { "word": "耳打ち", "meaning": "whispering in someone's ear" },
+      { "word": "耳元", "meaning": "close to one's ear" }
+    ]
+  },
+  {
+    "character": "足",
+    "readings": { "on": ["ソク"], "kun": ["あし", "た.りる", "た.す"] },
+    "meanings": ["foot", "leg", "sufficient"],
+    "compounds": [
+      { "word": "足りる", "meaning": "to be enough; to suffice" },
+      { "word": "満足", "meaning": "satisfaction; contentment" },
+      { "word": "足元", "meaning": "at one's feet; footing" }
+    ]
+  },
+  {
+    "character": "車",
+    "readings": { "on": ["シャ"], "kun": ["くるま"] },
+    "meanings": ["car", "vehicle"],
+    "compounds": [
+      { "word": "電車", "meaning": "train" },
+      { "word": "自転車", "meaning": "bicycle" },
+      { "word": "駐車場", "meaning": "parking lot" }
+    ]
+  },
+  {
+    "character": "雨",
+    "readings": { "on": ["ウ"], "kun": ["あめ", "あま"] },
+    "meanings": ["rain"],
+    "compounds": [
+      { "word": "大雨", "meaning": "heavy rain" },
+      { "word": "雨天", "meaning": "rainy weather" },
+      { "word": "梅雨", "meaning": "rainy season (tsuyu)" }
+    ]
+  },
+  {
+    "character": "電",
+    "readings": { "on": ["デン"], "kun": [] },
+    "meanings": ["electricity", "electric"],
+    "compounds": [
+      { "word": "電車", "meaning": "train" },
+      { "word": "電話", "meaning": "telephone" },
+      { "word": "電気", "meaning": "electricity; light" }
+    ]
+  },
+  {
+    "character": "男",
+    "readings": { "on": ["ダン", "ナン"], "kun": ["おとこ"] },
+    "meanings": ["man", "male"],
+    "compounds": [
+      { "word": "男の人", "meaning": "man; male person" },
+      { "word": "男性", "meaning": "male; man (formal)" },
+      { "word": "長男", "meaning": "eldest son" }
+    ]
+  },
+  {
+    "character": "女",
+    "readings": { "on": ["ジョ", "ニョ"], "kun": ["おんな", "め"] },
+    "meanings": ["woman", "female"],
+    "compounds": [
+      { "word": "女の人", "meaning": "woman; female person" },
+      { "word": "女性", "meaning": "female; woman (formal)" },
+      { "word": "長女", "meaning": "eldest daughter" }
+    ]
+  },
+  {
+    "character": "子",
+    "readings": { "on": ["シ", "ス"], "kun": ["こ"] },
+    "meanings": ["child"],
+    "compounds": [
+      { "word": "子供", "meaning": "child; children" },
+      { "word": "女の子", "meaning": "girl" },
+      { "word": "男の子", "meaning": "boy" }
+    ]
+  },
+  {
+    "character": "父",
+    "readings": { "on": ["フ"], "kun": ["ちち"] },
+    "meanings": ["father"],
+    "compounds": [
+      { "word": "お父さん", "meaning": "dad; father (polite)" },
+      { "word": "父親", "meaning": "father" },
+      { "word": "父母", "meaning": "parents; father and mother" }
+    ]
+  },
+  {
+    "character": "母",
+    "readings": { "on": ["ボ"], "kun": ["はは"] },
+    "meanings": ["mother"],
+    "compounds": [
+      { "word": "お母さん", "meaning": "mom; mother (polite)" },
+      { "word": "母親", "meaning": "mother" },
+      { "word": "父母", "meaning": "parents; father and mother" }
+    ]
+  },
+  {
+    "character": "友",
+    "readings": { "on": ["ユウ"], "kun": ["とも"] },
+    "meanings": ["friend"],
+    "compounds": [
+      { "word": "友達", "meaning": "friend" },
+      { "word": "友人", "meaning": "friend (formal)" },
+      { "word": "親友", "meaning": "close friend; best friend" }
+    ]
+  },
+  {
+    "character": "生",
+    "readings": { "on": ["セイ", "ショウ"], "kun": ["い.きる", "う.まれる", "なま"] },
+    "meanings": ["life", "birth", "raw"],
+    "compounds": [
+      { "word": "学生", "meaning": "student" },
+      { "word": "先生", "meaning": "teacher" },
+      { "word": "生まれる", "meaning": "to be born" }
+    ]
+  },
+  {
+    "character": "学",
+    "readings": { "on": ["ガク"], "kun": ["まな.ぶ"] },
+    "meanings": ["study", "learning", "school"],
+    "compounds": [
+      { "word": "学校", "meaning": "school" },
+      { "word": "大学", "meaning": "university" },
+      { "word": "学ぶ", "meaning": "to learn; to study" }
+    ]
+  },
+  {
+    "character": "校",
+    "readings": { "on": ["コウ"], "kun": [] },
+    "meanings": ["school"],
+    "compounds": [
+      { "word": "学校", "meaning": "school" },
+      { "word": "小学校", "meaning": "elementary school" },
+      { "word": "高校", "meaning": "high school" }
+    ]
+  },
+  {
+    "character": "先",
+    "readings": { "on": ["セン"], "kun": ["さき"] },
+    "meanings": ["previous", "ahead", "tip"],
+    "compounds": [
+      { "word": "先生", "meaning": "teacher" },
+      { "word": "先週", "meaning": "last week" },
+      { "word": "先ほど", "meaning": "a little while ago" }
+    ]
+  },
+  {
+    "character": "国",
+    "readings": { "on": ["コク"], "kun": ["くに"] },
+    "meanings": ["country", "nation"],
+    "compounds": [
+      { "word": "外国", "meaning": "foreign country" },
+      { "word": "中国", "meaning": "China" },
+      { "word": "国際", "meaning": "international" }
+    ]
+  },
+  {
+    "character": "語",
+    "readings": { "on": ["ゴ"], "kun": ["かた.る"] },
+    "meanings": ["language", "word", "speak"],
+    "compounds": [
+      { "word": "日本語", "meaning": "Japanese language" },
+      { "word": "語学", "meaning": "language study" },
+      { "word": "語る", "meaning": "to tell; to talk about" }
+    ]
+  },
+  {
+    "character": "字",
+    "readings": { "on": ["ジ"], "kun": ["あざ"] },
+    "meanings": ["character", "letter", "writing"],
+    "compounds": [
+      { "word": "漢字", "meaning": "kanji; Chinese character" },
+      { "word": "文字", "meaning": "letter; character; writing" },
+      { "word": "数字", "meaning": "numeral; digit" }
+    ]
+  },
+  {
+    "character": "本",
+    "readings": { "on": ["ホン"], "kun": ["もと"] },
+    "meanings": ["book", "origin", "main"],
+    "compounds": [
+      { "word": "日本", "meaning": "Japan" },
+      { "word": "本当", "meaning": "truth; really; truly" },
+      { "word": "本屋", "meaning": "bookstore" }
+    ]
+  },
+  {
+    "character": "長",
+    "readings": { "on": ["チョウ"], "kun": ["なが.い"] },
+    "meanings": ["long", "leader"],
+    "compounds": [
+      { "word": "長い", "meaning": "long" },
+      { "word": "校長", "meaning": "school principal" },
+      { "word": "長女", "meaning": "eldest daughter" }
+    ]
+  },
+  {
+    "character": "高",
+    "readings": { "on": ["コウ"], "kun": ["たか.い", "たか"] },
+    "meanings": ["high", "tall", "expensive"],
+    "compounds": [
+      { "word": "高い", "meaning": "tall; expensive" },
+      { "word": "高校", "meaning": "high school" },
+      { "word": "最高", "meaning": "highest; best; maximum" }
+    ]
+  },
+  {
+    "character": "安",
+    "readings": { "on": ["アン"], "kun": ["やす.い"] },
+    "meanings": ["cheap", "peaceful", "safe"],
+    "compounds": [
+      { "word": "安い", "meaning": "cheap; inexpensive" },
+      { "word": "安心", "meaning": "peace of mind; relief" },
+      { "word": "不安", "meaning": "anxiety; unease" }
+    ]
+  },
+  {
+    "character": "新",
+    "readings": { "on": ["シン"], "kun": ["あたら.しい", "あら"] },
+    "meanings": ["new"],
+    "compounds": [
+      { "word": "新しい", "meaning": "new" },
+      { "word": "新聞", "meaning": "newspaper" },
+      { "word": "新幹線", "meaning": "Shinkansen; bullet train" }
+    ]
+  },
+  {
+    "character": "古",
+    "readings": { "on": ["コ"], "kun": ["ふる.い"] },
+    "meanings": ["old", "ancient"],
+    "compounds": [
+      { "word": "古い", "meaning": "old; ancient" },
+      { "word": "古典", "meaning": "classic; classical literature" },
+      { "word": "中古", "meaning": "used; secondhand" }
+    ]
+  },
+  {
+    "character": "白",
+    "readings": { "on": ["ハク", "ビャク"], "kun": ["しろ", "しろ.い"] },
+    "meanings": ["white"],
+    "compounds": [
+      { "word": "白い", "meaning": "white" },
+      { "word": "白紙", "meaning": "blank paper; white paper" },
+      { "word": "白鳥", "meaning": "swan" }
+    ]
+  },
+  {
+    "character": "黒",
+    "readings": { "on": ["コク"], "kun": ["くろ", "くろ.い"] },
+    "meanings": ["black"],
+    "compounds": [
+      { "word": "黒い", "meaning": "black" },
+      { "word": "黒板", "meaning": "blackboard" },
+      { "word": "黒字", "meaning": "profit; in the black" }
+    ]
+  },
+  {
+    "character": "赤",
+    "readings": { "on": ["セキ", "シャク"], "kun": ["あか", "あか.い"] },
+    "meanings": ["red"],
+    "compounds": [
+      { "word": "赤い", "meaning": "red" },
+      { "word": "赤ちゃん", "meaning": "baby; infant" },
+      { "word": "赤字", "meaning": "deficit; in the red" }
+    ]
+  },
+  {
+    "character": "青",
+    "readings": { "on": ["セイ", "ショウ"], "kun": ["あお", "あお.い"] },
+    "meanings": ["blue", "green"],
+    "compounds": [
+      { "word": "青い", "meaning": "blue; green" },
+      { "word": "青空", "meaning": "blue sky" },
+      { "word": "青年", "meaning": "youth; young person" }
+    ]
+  },
+  {
+    "character": "花",
+    "readings": { "on": ["カ"], "kun": ["はな"] },
+    "meanings": ["flower"],
+    "compounds": [
+      { "word": "花火", "meaning": "fireworks" },
+      { "word": "花見", "meaning": "cherry blossom viewing" },
+      { "word": "花束", "meaning": "bouquet; bunch of flowers" }
+    ]
+  },
+  {
+    "character": "空",
+    "readings": { "on": ["クウ"], "kun": ["そら", "あ.く", "から"] },
+    "meanings": ["sky", "empty", "air"],
+    "compounds": [
+      { "word": "空港", "meaning": "airport" },
+      { "word": "青空", "meaning": "blue sky" },
+      { "word": "空く", "meaning": "to become empty; to be available" }
+    ]
+  },
+  {
+    "character": "気",
+    "readings": { "on": ["キ", "ケ"], "kun": [] },
+    "meanings": ["spirit", "air", "mood"],
+    "compounds": [
+      { "word": "天気", "meaning": "weather" },
+      { "word": "気持ち", "meaning": "feeling; mood" },
+      { "word": "元気", "meaning": "healthy; energetic; fine" }
+    ]
+  },
+  {
+    "character": "天",
+    "readings": { "on": ["テン"], "kun": ["あめ", "あま"] },
+    "meanings": ["heaven", "sky"],
+    "compounds": [
+      { "word": "天気", "meaning": "weather" },
+      { "word": "天国", "meaning": "heaven; paradise" },
+      { "word": "天井", "meaning": "ceiling" }
+    ]
+  },
+  {
+    "character": "何",
+    "readings": { "on": ["カ"], "kun": ["なに", "なん"] },
+    "meanings": ["what", "how many"],
+    "compounds": [
+      { "word": "何時", "meaning": "what time" },
+      { "word": "何人", "meaning": "how many people" },
+      { "word": "何語", "meaning": "what language" }
+    ]
+  },
+  {
+    "character": "今",
+    "readings": { "on": ["コン", "キン"], "kun": ["いま"] },
+    "meanings": ["now", "this"],
+    "compounds": [
+      { "word": "今日", "meaning": "today" },
+      { "word": "今週", "meaning": "this week" },
+      { "word": "今年", "meaning": "this year" }
+    ]
+  },
+  {
+    "character": "休",
+    "readings": { "on": ["キュウ"], "kun": ["やす.む", "やす.み"] },
+    "meanings": ["rest", "day off"],
+    "compounds": [
+      { "word": "休む", "meaning": "to rest; to take a day off" },
+      { "word": "休日", "meaning": "holiday; day off" },
+      { "word": "休憩", "meaning": "break; short rest" }
+    ]
+  },
+  {
+    "character": "行",
+    "readings": { "on": ["コウ", "ギョウ"], "kun": ["い.く", "ゆ.く", "おこな.う"] },
+    "meanings": ["go", "conduct"],
+    "compounds": [
+      { "word": "行く", "meaning": "to go" },
+      { "word": "旅行", "meaning": "travel; trip" },
+      { "word": "銀行", "meaning": "bank" }
+    ]
+  },
+  {
+    "character": "来",
+    "readings": { "on": ["ライ"], "kun": ["く.る", "き.たる"] },
+    "meanings": ["come"],
+    "compounds": [
+      { "word": "来る", "meaning": "to come" },
+      { "word": "来年", "meaning": "next year" },
+      { "word": "来週", "meaning": "next week" }
+    ]
+  },
+  {
+    "character": "帰",
+    "readings": { "on": ["キ"], "kun": ["かえ.る", "かえ.す"] },
+    "meanings": ["return", "go home"],
+    "compounds": [
+      { "word": "帰る", "meaning": "to return; to go home" },
+      { "word": "帰国", "meaning": "returning to one's country" },
+      { "word": "帰宅", "meaning": "returning home" }
+    ]
+  },
+  {
+    "character": "食",
+    "readings": { "on": ["ショク"], "kun": ["た.べる", "く.う"] },
+    "meanings": ["eat", "food"],
+    "compounds": [
+      { "word": "食べる", "meaning": "to eat" },
+      { "word": "食事", "meaning": "meal" },
+      { "word": "食堂", "meaning": "cafeteria; dining hall" }
+    ]
+  },
+  {
+    "character": "飲",
+    "readings": { "on": ["イン"], "kun": ["の.む"] },
+    "meanings": ["drink"],
+    "compounds": [
+      { "word": "飲む", "meaning": "to drink" },
+      { "word": "飲み物", "meaning": "drink; beverage" },
+      { "word": "飲食", "meaning": "food and drink" }
+    ]
+  },
+  {
+    "character": "見",
+    "readings": { "on": ["ケン"], "kun": ["み.る", "み.える", "み.せる"] },
+    "meanings": ["see", "look", "show"],
+    "compounds": [
+      { "word": "見る", "meaning": "to see; to watch" },
+      { "word": "見える", "meaning": "to be visible; to seem" },
+      { "word": "見物", "meaning": "sightseeing; watching" }
+    ]
+  },
+  {
+    "character": "聞",
+    "readings": { "on": ["ブン", "モン"], "kun": ["き.く", "き.こえる"] },
+    "meanings": ["hear", "listen", "ask"],
+    "compounds": [
+      { "word": "聞く", "meaning": "to hear; to listen; to ask" },
+      { "word": "新聞", "meaning": "newspaper" },
+      { "word": "聞こえる", "meaning": "to be audible; to be heard" }
+    ]
+  },
+  {
+    "character": "話",
+    "readings": { "on": ["ワ"], "kun": ["はな.す", "はなし"] },
+    "meanings": ["speak", "story", "talk"],
+    "compounds": [
+      { "word": "話す", "meaning": "to speak; to talk" },
+      { "word": "電話", "meaning": "telephone" },
+      { "word": "話し合い", "meaning": "discussion; talk" }
+    ]
+  },
+  {
+    "character": "読",
+    "readings": { "on": ["ドク", "トク"], "kun": ["よ.む"] },
+    "meanings": ["read"],
+    "compounds": [
+      { "word": "読む", "meaning": "to read" },
+      { "word": "読書", "meaning": "reading (books)" },
+      { "word": "読者", "meaning": "reader" }
+    ]
+  },
+  {
+    "character": "書",
+    "readings": { "on": ["ショ"], "kun": ["か.く"] },
+    "meanings": ["write"],
+    "compounds": [
+      { "word": "書く", "meaning": "to write" },
+      { "word": "教科書", "meaning": "textbook" },
+      { "word": "辞書", "meaning": "dictionary" }
+    ]
+  },
+  {
+    "character": "買",
+    "readings": { "on": ["バイ"], "kun": ["か.う"] },
+    "meanings": ["buy"],
+    "compounds": [
+      { "word": "買う", "meaning": "to buy" },
+      { "word": "買い物", "meaning": "shopping" },
+      { "word": "売買", "meaning": "buying and selling; trade" }
+    ]
+  },
+  {
+    "character": "出",
+    "readings": { "on": ["シュツ", "スイ"], "kun": ["で.る", "だ.す"] },
+    "meanings": ["exit", "go out", "take out"],
+    "compounds": [
+      { "word": "出る", "meaning": "to exit; to come out" },
+      { "word": "出口", "meaning": "exit" },
+      { "word": "出発", "meaning": "departure" }
+    ]
+  },
+  {
+    "character": "入",
+    "readings": { "on": ["ニュウ"], "kun": ["い.る", "い.れる", "はい.る"] },
+    "meanings": ["enter", "put in"],
+    "compounds": [
+      { "word": "入る", "meaning": "to enter; to go in" },
+      { "word": "入口", "meaning": "entrance" },
+      { "word": "入学", "meaning": "school enrollment; starting school" }
+    ]
+  }
+]

@@ -3,12 +3,15 @@
 Ideas and future improvements for Kotoba.
 
 ## Features
-- [ ] Combine flashcard, quiz and typing into one mode and integrate it with SRS algorithm.
-- [ ] Add reading, and setup a job for generating reading exercises using an LLM that we can run on an interval to maximize our free usage.
+- [ ] Add reading comprehension section
 - [ ] Example sentences for vocabulary entries
+- [ ] Track study time as part of progress, log after every quiz
 
 ## Data
-- [ ] Add more N1 vocabulary entries to `data/vocabulary.json`
+- [ ] Run scripts/generate-exercises.js on a schedule to generate reading comprehension exercises
+- [ ] Brainstorm ways to compress data file sizes or maybe use encode/decoding strategies
 
 ## UI/UX
 - [ ] Furigana toggle
+- [ ] Mobile-friendly responsive design
+
