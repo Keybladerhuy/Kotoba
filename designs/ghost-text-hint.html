@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Ghost Hint + Error State</title>
+
+<style>
+  body {
+    background: #0f172a;
+    color: white;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .input-wrapper {
+    position: relative;
+    width: 320px;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 20px;
+    background: #1e293b;
+    color: white;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input:focus {
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+  }
+
+  .input-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+  }
+
+  .input-correct {
+    border-color: #22c55e !important;
+  }
+
+  .hint {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.3);
+    pointer-events: none;
+    font-size: 20px;
+    white-space: pre;
+    transition: opacity 0.2s ease;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="input-wrapper">
+  <input id="input" autocomplete="off" />
+  <div class="hint" id="hint"></div>
+</div>
+
+<script>
+const input = document.getElementById("input");
+const hint = document.getElementById("hint");
+
+const answer = "シン";
+
+function update() {
+  const value = input.value;
+
+  // Reset states
+  input.classList.remove("input-error", "input-correct");
+
+  if (!value) {
+    // Empty → show full hint
+    hint.textContent = answer;
+    hint.style.opacity = 1;
+    return;
+  }
+
+  if (answer.startsWith(value)) {
+    // Correct so far
+    hint.textContent = value + answer.slice(value.length);
+    hint.style.opacity = 0.5;
+
+    if (value === answer) {
+      input.classList.add("input-correct");
+      hint.style.opacity = 0;
+    }
+  } else {
+    // Wrong input
+    input.classList.add("input-error");
+    hint.style.opacity = 0; // hide hint completely
+  }
+}
+
+input.addEventListener("input", update);
+update();
+</script>
+
+</body>
+</html>

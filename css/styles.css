@@ -445,6 +445,167 @@ main {
 
 .deck-buttons { display: flex; gap: .75rem; flex-wrap: wrap; }
 
+/* ============================================================
+   KANJI CARD — REDESIGN
+   ============================================================ */
+.deck-card-kanji {
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  cursor: default;
+}
+
+.deck-card-kanji .kanji-bg-char {
+  position: absolute;
+  top: -20px;
+  right: -10px;
+  font-size: 120px;
+  font-weight: bold;
+  opacity: 0.05;
+  pointer-events: none;
+  line-height: 1;
+  color: var(--text);
+}
+
+.deck-card-kanji .deck-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 20px 0;
+}
+
+.deck-icon-kanji {
+  font-size: 2.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ffb347, #ff7a18);
+  border-radius: 12px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(255, 122, 24, 0.4);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.deck-card-kanji h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Looping mastered kanji ticker */
+.kanji-ticker {
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 14px 20px;
+  position: relative;
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+.kanji-ticker-track {
+  display: inline-block;
+  animation: kanji-ticker-scroll 12s linear infinite;
+  opacity: 0.5;
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+}
+
+.kanji-ticker-track:empty {
+  animation: none;
+}
+
+.kanji-ticker-track::after {
+  content: attr(data-text);
+  padding-left: 2em;
+}
+
+@keyframes kanji-ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Compact progress unit */
+.deck-progress-unit {
+  padding: 0 20px;
+}
+
+.deck-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
+.deck-progress-bar-wrap {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: visible;
+  position: relative;
+}
+
+[data-theme="light"] .deck-progress-bar-wrap {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.deck-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00ffa3, #00c3ff);
+  border-radius: 10px;
+  position: relative;
+  transition: width 0.4s ease;
+}
+
+/* Glowing progress dot at the leading edge */
+.deck-progress-fill::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+/* CTA button */
+.deck-cta {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 18px 20px 20px;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #ff7a18, #ffb347);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  font-family: inherit;
+}
+
+.deck-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 122, 24, 0.4);
+}
+
+.deck-cta:active {
+  transform: scale(0.97);
+}
+
+/* Remove default deck-card hover lift for kanji card (CTA handles interaction) */
+.deck-card-kanji:hover {
+  transform: none;
+}
+
 .due-badge {
   display: inline-flex;
   align-items: center;
@@ -1130,9 +1291,23 @@ kbd {
   background: var(--correct-bg);
 }
 
+.typing-input.input-correct.glow-pulse {
+  animation: glowPulse .6s ease both;
+}
+
+@keyframes glowPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+  40%  { box-shadow: 0 0 12px 4px rgba(34, 197, 94, 0.35); }
+  100% { box-shadow: 0 0 4px 1px rgba(34, 197, 94, 0.1); }
+}
+
 .typing-input.input-wrong {
   border-color: var(--wrong);
   background: var(--wrong-bg);
+}
+
+.typing-input.input-error {
+  border-color: var(--wrong);
 }
 
 .typing-feedback {
@@ -1508,6 +1683,463 @@ kbd {
   color: var(--text-muted);
 }
 
+.typing-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.typing-inline-feedback {
+  position: absolute;
+  right: .75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: .85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: inlineFeedbackIn .35s ease both;
+}
+
+.typing-inline-feedback.feedback-correct {
+  color: var(--correct);
+  animation: inlineFeedbackBounce .5s ease both;
+  overflow: visible;
+}
+
+.typing-inline-feedback.feedback-wrong {
+  color: var(--wrong);
+  opacity: .85;
+}
+
+@keyframes inlineFeedbackIn {
+  from { opacity: 0; transform: translateY(-50%) translateX(8px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+@keyframes inlineFeedbackBounce {
+  0%   { opacity: 0; transform: translateY(-50%) scale(0.6); }
+  50%  { opacity: 1; transform: translateY(-50%) scale(1.15); }
+  75%  { transform: translateY(-50%) scale(0.95); }
+  100% { transform: translateY(-50%) scale(1); }
+}
+
+/* ============================================================
+   EMOJI ANIMATIONS
+   Each emoji has an entrance animation followed by an infinite
+   idle loop so the effect stays alive while visible.
+   ============================================================ */
+.emoji-fx {
+  display: inline-block;
+  position: relative;
+  font-style: normal;
+}
+
+/* 🎯 Target — slide in from left with thud, then gentle sway */
+.emoji-fx-target {
+  animation: emojiTargetIn .8s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             emojiTargetIdle 2s ease-in-out .8s infinite;
+}
+@keyframes emojiTargetIn {
+  0%   { transform: translateX(-22px) scale(0.6); opacity: 0; }
+  50%  { transform: translateX(5px) scale(1.15); opacity: 1; }
+  75%  { transform: translateX(-2px) scale(1.0); }
+  100% { transform: translateX(0) scale(1.0); }
+}
+@keyframes emojiTargetIdle {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(2px) scale(1.05); }
+}
+
+/* ✨ Sparkle — rotate in + looping twinkle, particles burst */
+.emoji-fx-sparkle {
+  animation: emojiSparkleIn .9s ease both,
+             emojiSparkleIdle 1.8s ease-in-out .9s infinite;
+}
+@keyframes emojiSparkleIn {
+  0%   { transform: scale(0.4) rotate(-40deg); opacity: 0; }
+  50%  { transform: scale(1.3) rotate(12deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes emojiSparkleIdle {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25%      { transform: scale(1.1) rotate(5deg); }
+  75%      { transform: scale(0.95) rotate(-3deg); }
+}
+.emoji-fx-sparkle .emoji-particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fbbf24;
+}
+.emoji-fx-sparkle .emoji-particle:nth-child(1) { animation: sparkleP1 1.2s ease-out both; }
+.emoji-fx-sparkle .emoji-particle:nth-child(2) { background: #f9a8d4; animation: sparkleP2 1.2s ease-out .08s both; }
+.emoji-fx-sparkle .emoji-particle:nth-child(3) { background: #67e8f9; animation: sparkleP3 1.2s ease-out .15s both; }
+.emoji-fx-sparkle .emoji-particle:nth-child(4) { background: #a78bfa; animation: sparkleP4 1.2s ease-out .1s both; }
+@keyframes sparkleP1 {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(14px, -16px) scale(0); opacity: 0; }
+}
+@keyframes sparkleP2 {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(-12px, -14px) scale(0); opacity: 0; }
+}
+@keyframes sparkleP3 {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(16px, 10px) scale(0); opacity: 0; }
+}
+@keyframes sparkleP4 {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(-14px, 12px) scale(0); opacity: 0; }
+}
+
+/* 🔥 Fire — flicker entrance + continuous flame shimmer */
+.emoji-fx-fire {
+  animation: emojiFireIn 1s ease both,
+             emojiFireIdle 1.2s ease-in-out 1s infinite;
+  filter: drop-shadow(0 0 5px rgba(251, 146, 60, 0.6));
+}
+@keyframes emojiFireIn {
+  0%   { transform: scaleY(0.4) scaleX(0.8); opacity: 0; }
+  25%  { transform: scaleY(1.2) scaleX(1.08); opacity: 1; }
+  50%  { transform: scaleY(0.92) scaleX(0.96); }
+  75%  { transform: scaleY(1.1) scaleX(1.04); }
+  100% { transform: scaleY(1) scaleX(1); }
+}
+@keyframes emojiFireIdle {
+  0%, 100% { transform: scaleY(1) scaleX(1); filter: drop-shadow(0 0 5px rgba(251, 146, 60, 0.6)); }
+  25%      { transform: scaleY(1.08) scaleX(0.97); filter: drop-shadow(0 0 8px rgba(251, 146, 60, 0.8)); }
+  50%      { transform: scaleY(0.95) scaleX(1.03); filter: drop-shadow(0 0 4px rgba(251, 146, 60, 0.5)); }
+  75%      { transform: scaleY(1.05) scaleX(0.98); filter: drop-shadow(0 0 7px rgba(251, 146, 60, 0.7)); }
+}
+
+/* 💪 Flex — pump bounce + subtle pulse */
+.emoji-fx-flex {
+  animation: emojiFlexIn .9s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             emojiFlexIdle 2s ease-in-out .9s infinite;
+}
+@keyframes emojiFlexIn {
+  0%   { transform: scale(0.3); opacity: 0; }
+  35%  { transform: scale(1.35); opacity: 1; }
+  55%  { transform: scale(0.85); }
+  75%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+@keyframes emojiFlexIdle {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.1); }
+}
+
+/* ⭐ Star — spin in + continuous slow spin with gold glow */
+.emoji-fx-star {
+  animation: emojiStarIn 1s ease both,
+             emojiStarIdle 3s linear 1s infinite;
+  filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.5));
+}
+@keyframes emojiStarIn {
+  0%   { transform: rotate(-200deg) scale(0.2); opacity: 0; }
+  60%  { transform: rotate(25deg) scale(1.15); opacity: 1; }
+  80%  { transform: rotate(-5deg) scale(0.95); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+@keyframes emojiStarIdle {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* 🎉 Party — pop entrance + joyful wobble, confetti bursts */
+.emoji-fx-party {
+  animation: emojiPartyIn .8s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             emojiPartyIdle 1.5s ease-in-out .8s infinite;
+}
+@keyframes emojiPartyIn {
+  0%   { transform: scale(0); opacity: 0; }
+  50%  { transform: scale(1.25); opacity: 1; }
+  75%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+@keyframes emojiPartyIdle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25%      { transform: rotate(6deg) scale(1.05); }
+  75%      { transform: rotate(-6deg) scale(1.05); }
+}
+.emoji-fx-party .emoji-particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+.emoji-fx-party .emoji-particle:nth-child(1) { background: #fb923c; animation: confettiP1 1.2s ease-out both; }
+.emoji-fx-party .emoji-particle:nth-child(2) { background: #f472b6; animation: confettiP2 1.2s ease-out .06s both; }
+.emoji-fx-party .emoji-particle:nth-child(3) { background: #34d399; animation: confettiP3 1.2s ease-out .12s both; }
+.emoji-fx-party .emoji-particle:nth-child(4) { background: #60a5fa; animation: confettiP4 1.2s ease-out .09s both; }
+.emoji-fx-party .emoji-particle:nth-child(5) { background: #fbbf24; animation: confettiP5 1.2s ease-out .15s both; }
+.emoji-fx-party .emoji-particle:nth-child(6) { background: #a78bfa; animation: confettiP6 1.2s ease-out .05s both; }
+@keyframes confettiP1 {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(18px, -18px) scale(0); opacity: 0; }
+}
+@keyframes confettiP2 {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(-16px, -16px) scale(0); opacity: 0; }
+}
+@keyframes confettiP3 {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(20px, 8px) scale(0); opacity: 0; }
+}
+@keyframes confettiP4 {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(-18px, 10px) scale(0); opacity: 0; }
+}
+@keyframes confettiP5 {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(10px, -20px) scale(0); opacity: 0; }
+}
+@keyframes confettiP6 {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(-10px, 18px) scale(0); opacity: 0; }
+}
+
+/* 👏 Clap — double bounce + repeating clap motion */
+.emoji-fx-clap {
+  animation: emojiClapIn .9s ease both,
+             emojiClapIdle 1.4s ease-in-out .9s infinite;
+}
+@keyframes emojiClapIn {
+  0%   { transform: scale(0.4) rotate(-12deg); opacity: 0; }
+  30%  { transform: scale(1.25) rotate(6deg); opacity: 1; }
+  50%  { transform: scale(0.9) rotate(-4deg); }
+  70%  { transform: scale(1.12) rotate(3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes emojiClapIdle {
+  0%, 100% { transform: scale(1); }
+  40%      { transform: scale(1.15); }
+  60%      { transform: scale(0.95); }
+}
+
+/* 💫 Dizzy star — spiral in + continuous orbit */
+.emoji-fx-dizzy {
+  animation: emojiDizzyIn 1s ease both,
+             emojiDizzyIdle 2.5s linear 1s infinite;
+  filter: drop-shadow(0 0 4px rgba(167, 139, 250, 0.5));
+}
+@keyframes emojiDizzyIn {
+  0%   { transform: rotate(-300deg) scale(0.15) translateX(10px); opacity: 0; }
+  65%  { transform: rotate(18deg) scale(1.12) translateX(0); opacity: 1; }
+  100% { transform: rotate(0deg) scale(1) translateX(0); }
+}
+@keyframes emojiDizzyIdle {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ⚡ Lightning — flash in + electric flicker */
+.emoji-fx-lightning {
+  animation: emojiLightningIn .7s ease both,
+             emojiLightningIdle 1.5s ease-in-out .7s infinite;
+  filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.6));
+}
+@keyframes emojiLightningIn {
+  0%   { transform: scale(0.2) translateY(-12px); opacity: 0; filter: brightness(3); }
+  35%  { transform: scale(1.25) translateY(3px); opacity: 1; filter: brightness(1.5); }
+  60%  { transform: scale(0.9) translateY(-1px); filter: brightness(1); }
+  100% { transform: scale(1) translateY(0); filter: brightness(1); }
+}
+@keyframes emojiLightningIdle {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.6)); }
+  15%      { opacity: 0.7; filter: drop-shadow(0 0 2px rgba(250, 204, 21, 0.3)); }
+  30%      { opacity: 1; filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.9)); }
+  45%      { opacity: 0.85; filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.4)); }
+  60%      { opacity: 1; filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.7)); }
+}
+
+/* 💥 Explosion — burst out + pulsing aftershock */
+.emoji-fx-boom {
+  animation: emojiBoomIn .9s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             emojiBoomIdle 1.8s ease-in-out .9s infinite;
+  filter: drop-shadow(0 0 5px rgba(251, 113, 133, 0.5));
+}
+@keyframes emojiBoomIn {
+  0%   { transform: scale(0); opacity: 0; }
+  25%  { transform: scale(1.6); opacity: 1; }
+  45%  { transform: scale(0.8); }
+  65%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+@keyframes emojiBoomIdle {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(251, 113, 133, 0.5)); }
+  50%      { transform: scale(1.12); filter: drop-shadow(0 0 10px rgba(251, 113, 133, 0.8)); }
+}
+
+/* 🏆 Trophy — rise up + gentle float */
+.emoji-fx-trophy {
+  animation: emojiTrophyIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             emojiTrophyIdle 2.5s ease-in-out 1s infinite;
+  filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.5));
+}
+@keyframes emojiTrophyIn {
+  0%   { transform: translateY(14px) scale(0.3); opacity: 0; }
+  55%  { transform: translateY(-4px) scale(1.2); opacity: 1; }
+  75%  { transform: translateY(1px) scale(0.95); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes emojiTrophyIdle {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+/* 👑 Crown — drop down + majestic hover */
+.emoji-fx-crown {
+  animation: emojiCrownIn .9s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             emojiCrownIdle 2s ease-in-out .9s infinite;
+  filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.4));
+}
+@keyframes emojiCrownIn {
+  0%   { transform: translateY(-18px) scale(0.5); opacity: 0; }
+  45%  { transform: translateY(3px) scale(1.15); opacity: 1; }
+  70%  { transform: translateY(-1px) scale(0.95); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes emojiCrownIdle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-2px) rotate(3deg); }
+}
+
+/* 🌟 Glowing star — rotate in + breathing glow */
+.emoji-fx-glow {
+  animation: emojiGlowIn 1s ease both,
+             emojiGlowIdle 2s ease-in-out 1s infinite;
+}
+@keyframes emojiGlowIn {
+  0%   { transform: scale(0.2) rotate(-25deg); opacity: 0; filter: drop-shadow(0 0 0 transparent); }
+  50%  { transform: scale(1.25) rotate(12deg); opacity: 1; filter: drop-shadow(0 0 12px rgba(250, 204, 21, 0.9)); }
+  100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.5)); }
+}
+@keyframes emojiGlowIdle {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.4)); transform: scale(1); }
+  50%      { filter: drop-shadow(0 0 12px rgba(250, 204, 21, 0.9)); transform: scale(1.08); }
+}
+
+.typing-ghost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: .85rem 1rem;
+  border: 2px solid transparent;
+  font-size: 1.15rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-muted);
+  opacity: 0.35;
+  pointer-events: none;
+  white-space: pre;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
+}
+
+/* ============================================================
+   STAGED TYPING
+   ============================================================ */
+.staged-typing-view {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.st-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.st-field {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.st-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  min-height: 1.4rem;
+  margin-top: .25rem;
+}
+
+.st-hint {
+  font-size: .82rem;
+  padding: .15rem .5rem;
+  border-radius: 4px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  transition: opacity .2s, color .2s;
+}
+
+.st-hint-faded {
+  opacity: 0.35;
+}
+
+.st-hint-matched {
+  opacity: 1;
+  color: var(--correct);
+  font-weight: 600;
+  border-color: var(--correct);
+}
+
+.st-compounds {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .75rem 1rem;
+}
+
+.st-compounds-label {
+  font-size: .72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  margin-bottom: .4rem;
+}
+
+.st-compounds-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+
+.st-compound {
+  font-size: .9rem;
+  padding: .15rem .5rem;
+  background: var(--bg3);
+  border-radius: 4px;
+}
+
+.st-compound small {
+  color: var(--text-muted);
+  font-size: .78rem;
+  margin-left: .25rem;
+}
+
+.st-stage-badge {
+  font-size: .7rem;
+  font-weight: 600;
+  padding: .2rem .6rem;
+  border-radius: 999px;
+  background: var(--accent-glow);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
 /* ============================================================
    LOADING / ERROR
    ============================================================ */
@@ -1552,6 +2184,7 @@ kbd {
   .item-list-controls { flex-direction: column; align-items: stretch; }
   .item-list-filters { justify-content: flex-start; }
   .typing-input { font-size: 1rem; }
+  .typing-ghost { font-size: 1rem; }
 }
 
 /* ============================================================

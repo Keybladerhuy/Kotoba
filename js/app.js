@@ -21,6 +21,7 @@
     Flashcard.unmount();
     Quiz.unmount();
     Typing.unmount();
+    StagedTyping.unmount();
     view.innerHTML = '';
     view.appendChild(fragment);
   }
@@ -99,6 +100,21 @@
     const vPct = vStats.total ? (vStats.mastered / vStats.total) * 100 : 0;
     document.getElementById('kanji-progress-bar').style.width = kPct + '%';
     document.getElementById('vocab-progress-bar').style.width = vPct + '%';
+
+    // Kanji ticker — show mastered kanji, fall back to all kanji if none mastered
+    const tickerTrack = document.getElementById('kanji-ticker-track');
+    if (tickerTrack) {
+      const masteredKanji = kanji.filter(k => {
+        const p = Progress.getItem(k.character);
+        return p && p.masteryLevel === 3;
+      }).map(k => k.character);
+      const tickerChars = masteredKanji.length > 0
+        ? masteredKanji
+        : kanji.slice(0, 30).map(k => k.character);
+      const text = tickerChars.join(' ');
+      tickerTrack.textContent = text;
+      tickerTrack.setAttribute('data-text', text);
+    }
 
     document.getElementById('reset-progress').addEventListener('click', () => {
       if (confirm('Reset all progress? This cannot be undone.')) {
@@ -292,36 +308,14 @@
     Flashcard.unmount();
     Quiz.unmount();
     Typing.unmount();
+    StagedTyping.unmount();
 
-    if (studyMode === 'flashcard') {
-      const frag = cloneTemplate('tpl-flashcard');
+    if (studyMode === 'staged-typing') {
+      const frag = cloneTemplate('tpl-staged-typing');
       setView(frag);
-      // Add mode badge
-      _addModeBadge('Flashcard');
+      _addModeBadge(`Stage ${Session.currentStage() + 1}/3`);
       document.querySelector('[data-action="home"]')?.addEventListener('click', showHome);
-      Flashcard.mount(_currentMode, _showCurrentCard);
-    } else if (studyMode === 'quiz') {
-      const allPool = Session.allPool();
-      if (allPool.length < 4) {
-        // Not enough items for quiz — fall back to flashcard
-        const frag = cloneTemplate('tpl-flashcard');
-        setView(frag);
-        _addModeBadge('Flashcard');
-        document.querySelector('[data-action="home"]')?.addEventListener('click', showHome);
-        Flashcard.mount(_currentMode, _showCurrentCard);
-        return;
-      }
-      const frag = cloneTemplate('tpl-quiz');
-      setView(frag);
-      _addModeBadge('Quiz');
-      document.querySelector('[data-action="home"]')?.addEventListener('click', showHome);
-      Quiz.mount(_currentMode, allPool, _showCurrentCard);
-    } else if (studyMode === 'typing') {
-      const frag = cloneTemplate('tpl-typing');
-      setView(frag);
-      _addModeBadge('Typing');
-      document.querySelector('[data-action="home"]')?.addEventListener('click', showHome);
-      Typing.mount(_currentMode, _showCurrentCard);
+      StagedTyping.mount(_currentMode, _showCurrentCard);
     }
   }
 
@@ -359,6 +353,7 @@
     Flashcard.unmount();
     Quiz.unmount();
     Typing.unmount();
+    StagedTyping.unmount();
     updateNav('summary');
     const frag = cloneTemplate('tpl-summary');
     setView(frag);

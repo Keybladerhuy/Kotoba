@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Emoji FX Preview</title>
+<!--
+  Preview page for emoji animations defined in:
+    ../css/styles.css  (emoji-fx keyframes + particle styles)
+    ../js/emoji-fx.js  (EmojiFx module — buildPraiseHTML)
+
+  Animations loop every 2.5s so you can review without refreshing.
+-->
+<link rel="stylesheet" href="../css/styles.css" />
+<style>
+  body {
+    background: #0f172a;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 2rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: .5rem;
+    color: #94a3b8;
+  }
+
+  p.subtitle {
+    font-size: .85rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+    min-height: 100px;
+  }
+
+  .card-label {
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #64748b;
+  }
+
+  .card-demo {
+    font-size: 1.5rem;
+    min-height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #34d399;
+    font-weight: 600;
+    position: relative;
+  }
+
+  .card-text {
+    font-size: .82rem;
+    color: #94a3b8;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>Emoji FX Animation Preview</h1>
+<p class="subtitle">Each animation loops every 2.5 seconds. Defined in css/styles.css + js/emoji-fx.js</p>
+
+<div class="grid" id="grid"></div>
+
+<script src="../js/emoji-fx.js"></script>
+<script>
+const demos = [
+  { praise: '🎯 Spot on!',      desc: 'Slide in from left + thud bounce' },
+  { praise: '✨ Perfect!',       desc: 'Rotate in + 4 sparkle particles' },
+  { praise: '🔥 Nice!',          desc: 'Vertical flicker + warm glow' },
+  { praise: '💪 Nailed it!',     desc: 'Pump bounce (scale overshoot)' },
+  { praise: '⭐ Great!',         desc: 'Spin in 180° + gold glow' },
+  { praise: '🎉 Yes!',           desc: 'Pop from zero + 6 confetti dots' },
+  { praise: '👏 Got it!',        desc: 'Double bounce with rotation wobble' },
+  { praise: '💫 Brilliant!',     desc: 'Spiral in 270° + purple glow' },
+  { praise: '⚡ Unstoppable! x5', desc: 'Flash in bright from above + yellow glow' },
+  { praise: '💥 Crushing it! x5', desc: 'Burst out from scale 0 → 1.5 + glow' },
+  { praise: '🏆 Legendary! x10', desc: 'Rise up from below + gold glow' },
+  { praise: '👑 Master! x10',    desc: 'Drop down from above + gold glow' },
+  { praise: '🌟 Incredible! x10', desc: 'Rotate in + pulsing gold glow' },
+];
+
+const grid = document.getElementById('grid');
+
+// Build cards
+for (const demo of demos) {
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const label = document.createElement('div');
+  label.className = 'card-label';
+  label.textContent = demo.praise.split(' ').slice(1).join(' ');
+
+  const demoEl = document.createElement('div');
+  demoEl.className = 'card-demo';
+  demoEl.innerHTML = '✓ ' + EmojiFx.buildPraiseHTML(demo.praise);
+
+  const text = document.createElement('div');
+  text.className = 'card-text';
+  text.textContent = demo.desc;
+
+  card.appendChild(label);
+  card.appendChild(demoEl);
+  card.appendChild(text);
+  grid.appendChild(card);
+}
+
+// Re-inject particles periodically (emoji idles loop via CSS,
+// but particles are one-shot so we reset them every 4s)
+setInterval(() => {
+  const demoEls = document.querySelectorAll('.card-demo');
+  demoEls.forEach((el, i) => {
+    el.innerHTML = '✓ ' + EmojiFx.buildPraiseHTML(demos[i].praise);
+  });
+}, 4000);
+</script>
+
+</body>
+</html>

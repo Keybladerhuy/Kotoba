@@ -82,6 +82,16 @@ const Progress = (() => {
     _save(all);
   }
 
+  /** Reset mastery to 0 (used when a card is answered wrong in staged typing) */
+  function resetMastery(id) {
+    const all = _load();
+    if (!all[id]) return;
+    all[id].masteryLevel = 0;
+    all[id].lastSeen = new Date().toISOString();
+    all[id].incorrectCount += 1;
+    _save(all);
+  }
+
   /** Stats for a set of item IDs */
   function getStats(ids) {
     const all = _load();
@@ -123,5 +133,5 @@ const Progress = (() => {
     localStorage.removeItem(_key());
   }
 
-  return { getAll, getItem, recordResult, getStats, filterItems, getAllItemDetails, reset };
+  return { getAll, getItem, recordResult, resetMastery, getStats, filterItems, getAllItemDetails, reset };
 })();

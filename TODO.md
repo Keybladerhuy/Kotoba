@@ -4,6 +4,7 @@ Ideas and future improvements for Kotoba.
 
 ## Features
 - [ ] Add reading comprehension section
+- [ ] Add audio for reading comprehension section
 - [ ] Example sentences for vocabulary entries
 - [ ] Track study time as part of progress, log after every quiz
 

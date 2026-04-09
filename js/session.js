@@ -58,10 +58,17 @@ const Session = (() => {
     const id = getId(card);
     const progress = Progress.getItem(id);
     const level = progress ? progress.masteryLevel : 0;
-    if (level === 0) return 'flashcard';
-    if (level === 1) return 'quiz';
-    if (level === 2) return 'typing';
+    if (level >= 0 && level <= 2) return 'staged-typing';
     return null; // level 3 = mastered, shouldn't be in deck
+  }
+
+  /** Get the current card's mastery level (0, 1, or 2) for staged hint display */
+  function currentStage() {
+    const card = _deck[_index];
+    if (!card) return 0;
+    const id = getId(card);
+    const progress = Progress.getItem(id);
+    return progress ? progress.masteryLevel : 0;
   }
 
   function mode() {
@@ -137,11 +144,11 @@ const Session = (() => {
       }
     } else {
       _incorrect++;
-      Progress.recordResult(id, false);
+      Progress.resetMastery(id);
 
-      // Always repeat wrong cards
+      // Always repeat wrong cards — reset to stage 0
       _repeatMap[id].wrongCount++;
-      _repeatMap[id].correctNeeded++;
+      _repeatMap[id].correctNeeded = 0;
       _reinsert(card);
     }
 
@@ -161,5 +168,5 @@ const Session = (() => {
     return _repeatMap[id] || null;
   }
 
-  return { shuffle, start, getId, current, currentMode, mode, total, originalTotal, index, scores, allPool, recordAndAdvance, getRepeatInfo };
+  return { shuffle, start, getId, current, currentMode, currentStage, mode, total, originalTotal, index, scores, allPool, recordAndAdvance, getRepeatInfo };
 })();

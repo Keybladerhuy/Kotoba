@@ -30,6 +30,7 @@ Kotoba is a vanilla JS flashcard app for Japanese study across JLPT levels N1–
 | `js/flashcard.js` | `Flashcard` module — card flip animation (CSS class `flipped`), keyboard shortcuts (Space/←/→), self-grading; renders current card from Session |
 | `js/quiz.js` | `Quiz` module — multiple choice mode: 4 answer choices, auto-grading, keyboard (1-4), visual feedback; renders current card from Session |
 | `js/typing.js` | `Typing` module — dual-input mode: user must type both meaning AND reading correctly; renders current card from Session |
+| `js/emoji-fx.js` | `EmojiFx` module — wraps praise emojis in animated containers with CSS-driven effects (sparkle particles, fire flicker, bounce, spin, confetti, etc.) |
 | `js/app.js` | View router — boots the app, manages navigation between Home / Stats / Study / Summary views; routes each card to the correct study module via `_showCurrentCard()` |
 
 Views are defined as `<template>` tags in `index.html` (`tpl-home`, `tpl-stats`, `tpl-flashcard`, `tpl-quiz`, `tpl-typing`, `tpl-summary`) and injected into `<main id="view">` at runtime.
