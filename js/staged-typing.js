@@ -57,7 +57,7 @@ const StagedTyping = (() => {
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
-  let _streak = 0;
+  // Streak is now tracked in Session module
 
   const _praise = [
     '🎯 Spot on!', '✨ Perfect!', '🔥 Nice!', '💪 Nailed it!',
@@ -68,11 +68,12 @@ const StagedTyping = (() => {
     { min: 5, msgs: ['⚡ Unstoppable! x', '⚡ Dominating! x', '💥 Crushing it! x'] },
     { min: 10, msgs: ['🏆 Legendary! x', '👑 Master! x', '🌟 Incredible! x'] },
   ];
-  function _getPraise() {
+  function _getPraise(nextStreak) {
+    const s = nextStreak !== undefined ? nextStreak : Session.streak();
     for (let i = _streakPraise.length - 1; i >= 0; i--) {
-      if (_streak >= _streakPraise[i].min) {
+      if (s >= _streakPraise[i].min) {
         const msgs = _streakPraise[i].msgs;
-        return msgs[Math.floor(Math.random() * msgs.length)] + _streak;
+        return msgs[Math.floor(Math.random() * msgs.length)] + s;
       }
     }
     return _praise[Math.floor(Math.random() * _praise.length)];
@@ -161,6 +162,60 @@ const StagedTyping = (() => {
     );
   }
 
+  /** Render the dot-based progress top bar */
+  function _renderTopBar(stage) {
+    const dotsContainer = document.getElementById('st-progress-dots');
+    const stageLabel = document.getElementById('st-stage-label');
+    const streakEl = document.getElementById('st-streak');
+    const streakCount = document.getElementById('st-streak-count');
+    if (!dotsContainer) return;
+
+    // Progress dots — one per original card, colored by mastery state
+    const cards = Session.originalCards();
+    const currentCard = Session.current();
+    const currentId = currentCard ? Session.getId(currentCard) : null;
+    const mode = Session.mode();
+
+    dotsContainer.innerHTML = '';
+    dotsContainer.classList.toggle('dots-small', cards.length > 15);
+    dotsContainer.classList.toggle('dots-tiny', cards.length > 30);
+
+    for (const card of cards) {
+      const id = mode === 'kanji' ? card.character : card.word;
+      const dot = document.createElement('span');
+      dot.className = 'progress-dot';
+
+      if (id === currentId) {
+        dot.classList.add('current');
+      } else {
+        dot.classList.add(Session.cardState(id));
+      }
+      dotsContainer.appendChild(dot);
+    }
+
+    // Stage label
+    stageLabel.textContent = `Stage ${stage + 1}`;
+
+    // Hint blocks: 3 - stage active
+    const hintsActive = 3 - stage;
+    for (let i = 0; i < 3; i++) {
+      const hintBlock = document.getElementById(`st-hint-${i}`);
+      if (hintBlock) {
+        hintBlock.classList.toggle('active', i < hintsActive);
+        hintBlock.classList.toggle('fade', i >= hintsActive);
+      }
+    }
+
+    // Streak
+    const currentStreak = Session.streak();
+    if (currentStreak >= 2) {
+      streakEl.classList.add('visible');
+      streakCount.textContent = currentStreak;
+    } else {
+      streakEl.classList.remove('visible');
+    }
+  }
+
   /** Render the current card */
   function _renderCard() {
     const card = Session.current();
@@ -174,10 +229,6 @@ const StagedTyping = (() => {
     // Header
     const promptEl = document.getElementById('st-prompt');
     const promptSub = document.getElementById('st-prompt-sub');
-    const counter = document.getElementById('st-card-counter');
-    const bar = document.getElementById('st-progress-bar');
-    const scoreCorrect = document.getElementById('st-score-correct');
-    const scoreSeen = document.getElementById('st-score-seen');
     const feedbackEl = document.getElementById('st-feedback');
     const hintEl = document.getElementById('st-hint');
     const submitBtn = document.getElementById('st-submit');
@@ -188,13 +239,7 @@ const StagedTyping = (() => {
     const typeLabel = mode === 'kanji' ? 'Kanji' : 'Vocabulary';
     promptSub.textContent = typeLabel;
 
-    const idx = Session.index();
-    const total = Session.total();
-    const { correct, incorrect } = Session.scores();
-    counter.textContent = `${idx + 1} / ${total}`;
-    bar.style.width = (idx / total) * 100 + '%';
-    scoreCorrect.textContent = correct;
-    scoreSeen.textContent = correct + incorrect;
+    _renderTopBar(stage);
 
     feedbackEl.innerHTML = '';
     feedbackEl.className = 'typing-feedback';
@@ -302,6 +347,14 @@ const StagedTyping = (() => {
     let allCorrect = true;
     let fieldIndex = 0;
 
+    // Pre-check all fields for correctness to compute preview streak
+    for (const field of _fields) {
+      const inp = document.getElementById(`st-input-${field.id}`);
+      if (inp && !_checkField(inp.value, field.answers)) { allCorrect = false; break; }
+    }
+    const _previewStreak = allCorrect ? Session.streak() + 1 : 0;
+    allCorrect = true; // reset for actual grading loop
+
     for (const field of _fields) {
       const input = document.getElementById(`st-input-${field.id}`);
       if (!input) continue;
@@ -333,7 +386,7 @@ const StagedTyping = (() => {
           fb.className = 'typing-inline-feedback';
           if (_correct) {
             fb.classList.add('feedback-correct');
-            fb.innerHTML = '✓ ' + EmojiFx.buildPraiseHTML(_getPraise());
+            fb.innerHTML = '✓ ' + EmojiFx.buildPraiseHTML(_getPraise(_previewStreak));
           } else {
             fb.classList.add('feedback-wrong');
             fb.textContent = _field.answers.join(', ');
@@ -342,13 +395,6 @@ const StagedTyping = (() => {
         }
       }, delay);
       fieldIndex++;
-    }
-
-    // Update streak
-    if (allCorrect) {
-      _streak++;
-    } else {
-      _streak = 0;
     }
 
     feedbackEl.innerHTML = '';

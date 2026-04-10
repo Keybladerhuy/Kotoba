@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flashcard Top Bar Prototype</title>
+  <style>
+    body {
+      background: #0f172a;
+      color: #e5e7eb;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #111827;
+      border-radius: 20px;
+      padding: 24px;
+      width: 320px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    /* Progress dots */
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #374151;
+      transition: all 0.3s ease;
+    }
+
+    .dot.correct {
+      background: #22c55e;
+      transform: scale(1.2);
+    }
+
+    .dot.wrong {
+      background: #ef4444;
+    }
+
+    .dot.current {
+      outline: 2px solid #e5e7eb;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+
+    /* Info row */
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .left-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .arrow {
+      opacity: 0.5;
+    }
+
+    .hint-inline {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .hint-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #6b7280;
+      transition: all 0.3s ease;
+    }
+
+    .hint-dot.active {
+      background: #e5e7eb;
+    }
+
+    .hint-dot.fade {
+      opacity: 0.25;
+    }
+
+    /* Streak */
+    .streak {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .flame {
+      display: inline-block;
+      animation: flicker 1.6s infinite ease-in-out;
+    }
+
+    @keyframes flicker {
+      0% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
+      50% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+      100% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="card">
+
+    <!-- Progress Track -->
+    <div class="progress-row">
+      <div class="dot correct"></div>
+      <div class="dot correct"></div>
+      <div class="dot wrong"></div>
+      <div class="dot current"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <!-- Info Row Combined -->
+    <div class="info-row">
+      <div class="left-info">
+        <div>Stage 1</div>
+        <div class="arrow">→</div>
+        <div class="hint-inline">
+          <span>Hints:</span>
+          <div class="hint-dot active"></div>
+          <div class="hint-dot active"></div>
+          <div class="hint-dot fade"></div>
+        </div>
+      </div>
+
+      <div class="streak">
+        <span class="flame">🔥</span>
+        <span>2</span>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

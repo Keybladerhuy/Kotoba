@@ -22,6 +22,12 @@ const Session = (() => {
   // Repeat-wrong tracking: cardId → { wrongCount, correctNeeded }
   let _repeatMap = {};
 
+  // Per-card session tracking
+  let _originalCards = []; // original cards in session order (for dot display)
+  let _cardSeen = new Set(); // IDs of cards attempted at least once
+  let _cardLastWrong = new Set(); // IDs whose most recent attempt was wrong
+  let _streak = 0;
+
   function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -41,6 +47,10 @@ const Session = (() => {
     _onComplete = onComplete;
     _originalTotal = items.length;
     _repeatMap = {};
+    _originalCards = [...items];
+    _cardSeen = new Set();
+    _cardLastWrong = new Set();
+    _streak = 0;
   }
 
   function getId(item) {
@@ -60,6 +70,22 @@ const Session = (() => {
     const level = progress ? progress.masteryLevel : 0;
     if (level >= 0 && level <= 2) return 'staged-typing';
     return null; // level 3 = mastered, shouldn't be in deck
+  }
+
+  /** Skip past any already-mastered cards in the deck.
+   *  Returns true if the session is complete after skipping. */
+  function skipMastered() {
+    while (_index < _deck.length) {
+      const card = _deck[_index];
+      const id = getId(card);
+      const progress = Progress.getItem(id);
+      const level = progress ? progress.masteryLevel : 0;
+      if (level < 3) return false; // found a non-mastered card
+      _index++;
+    }
+    // Deck exhausted
+    _onComplete && _onComplete(scores());
+    return true;
   }
 
   /** Get the current card's mastery level (0, 1, or 2) for staged hint display */
@@ -112,6 +138,15 @@ const Session = (() => {
 
     if (!_repeatMap[id]) {
       _repeatMap[id] = { wrongCount: 0, correctNeeded: 0 };
+    }
+
+    _cardSeen.add(id);
+    if (correct) {
+      _cardLastWrong.delete(id);
+      _streak++;
+    } else {
+      _cardLastWrong.add(id);
+      _streak = 0;
     }
 
     if (correct) {
@@ -168,5 +203,25 @@ const Session = (() => {
     return _repeatMap[id] || null;
   }
 
-  return { shuffle, start, getId, current, currentMode, currentStage, mode, total, originalTotal, index, scores, allPool, recordAndAdvance, getRepeatInfo };
+  function originalCards() {
+    return _originalCards;
+  }
+
+  /** Get the session state for a card: 'unseen' | 'wrong' | 'stage-1' | 'stage-2' | 'mastered' */
+  function cardState(id) {
+    if (_cardLastWrong.has(id)) return 'wrong';
+    if (!_cardSeen.has(id)) return 'unseen';
+    const p = Progress.getItem(id);
+    const m = p ? p.masteryLevel : 0;
+    if (m >= 3) return 'mastered';
+    if (m === 2) return 'stage-2';
+    if (m === 1) return 'stage-1';
+    return 'unseen';
+  }
+
+  function streak() {
+    return _streak;
+  }
+
+  return { shuffle, start, getId, current, currentMode, currentStage, mode, total, originalTotal, index, scores, allPool, recordAndAdvance, skipMastered, getRepeatInfo, originalCards, cardState, streak };
 })();

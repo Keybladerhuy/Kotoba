@@ -302,6 +302,9 @@
 
   // ---- Unified card routing ----
   function _showCurrentCard() {
+    // Skip any already-mastered cards (e.g. included via "All cards" filter)
+    if (Session.skipMastered()) return; // session complete
+
     const studyMode = Session.currentMode();
     if (!studyMode) return; // session complete (handled by onComplete)
 
@@ -313,7 +316,6 @@
     if (studyMode === 'staged-typing') {
       const frag = cloneTemplate('tpl-staged-typing');
       setView(frag);
-      _addModeBadge(`Stage ${Session.currentStage() + 1}/3`);
       document.querySelector('[data-action="home"]')?.addEventListener('click', showHome);
       StagedTyping.mount(_currentMode, _showCurrentCard);
     }

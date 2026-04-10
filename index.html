@@ -230,18 +230,26 @@
   <!-- Staged Typing View -->
   <template id="tpl-staged-typing">
     <div class="staged-typing-view">
-      <div class="quiz-header">
-        <button class="btn btn-ghost" data-action="home">&larr; Back</button>
-        <div class="quiz-info">
-          <span id="st-card-counter">1 / 25</span>
-          <div class="mini-progress-bar-wrap">
-            <div class="mini-progress-bar" id="st-progress-bar"></div>
-          </div>
+      <div class="study-top-bar">
+        <div class="top-bar-nav">
+          <button class="btn btn-ghost" data-action="home">&larr; Back</button>
         </div>
-        <div class="score-display">
-          <span class="score-correct" id="st-score-correct">0</span>
-          <span class="score-sep">/</span>
-          <span class="score-total" id="st-score-seen">0</span>
+        <div class="progress-dots" id="st-progress-dots"></div>
+        <div class="info-row">
+          <div class="left-info">
+            <span id="st-stage-label">Stage 1</span>
+            <span class="info-arrow">&rarr;</span>
+            <span class="hint-inline">
+              <span>Hints:</span>
+              <span class="hint-block active" id="st-hint-0"></span>
+              <span class="hint-block active" id="st-hint-1"></span>
+              <span class="hint-block active" id="st-hint-2"></span>
+            </span>
+          </div>
+          <div class="streak-display" id="st-streak">
+            <span class="flame">&#128293;</span>
+            <span class="streak-count" id="st-streak-count">0</span>
+          </div>
         </div>
       </div>
 

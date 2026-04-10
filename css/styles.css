@@ -2141,6 +2141,148 @@ kbd {
 }
 
 /* ============================================================
+   STUDY TOP BAR — dot-based progress, stage, hints, streak
+   ============================================================ */
+.study-top-bar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+.top-bar-nav {
+  display: flex;
+  align-items: center;
+}
+
+/* ---- Progress dots ---- */
+.progress-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.progress-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg3);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* Stage colors — warm-to-cool progression */
+.progress-dot.stage-1 {
+  background: #f59e0b;  /* amber — just getting started */
+}
+
+.progress-dot.stage-2 {
+  background: #38bdf8;  /* sky blue — almost there */
+}
+
+.progress-dot.mastered {
+  background: var(--correct);  /* green — fully mastered */
+  transform: scale(1.15);
+}
+
+.progress-dot.wrong {
+  background: var(--wrong);
+}
+
+.progress-dot.current {
+  outline: 2px solid var(--text);
+  outline-offset: 1px;
+  animation: dotPulse 1.2s infinite;
+}
+
+/* unseen = default gray, no extra class needed */
+
+@keyframes dotPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* Scaled dots for larger sessions */
+.progress-dots.dots-small { gap: 4px; }
+.progress-dots.dots-small .progress-dot { width: 10px; height: 10px; }
+.progress-dots.dots-tiny { gap: 3px; }
+.progress-dots.dots-tiny .progress-dot { width: 7px; height: 7px; }
+
+/* ---- Info row ---- */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .85rem;
+}
+
+.left-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+}
+
+.info-arrow {
+  opacity: 0.5;
+}
+
+/* ---- Hint blocks (squares, not dots) ---- */
+.hint-inline {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hint-block {
+  width: 14px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--text-muted);
+  transition: all 0.3s ease;
+}
+
+.hint-block.active {
+  background: var(--text);
+}
+
+.hint-block.fade {
+  opacity: 0.2;
+}
+
+/* ---- Streak ---- */
+.streak-display {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  font-size: .95rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.streak-display.visible {
+  opacity: 1;
+}
+
+.flame {
+  display: inline-block;
+  animation: flicker 1.6s infinite ease-in-out;
+}
+
+@keyframes flicker {
+  0% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
+  50% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
+}
+
+.streak-count {
+  color: var(--text);
+}
+
+/* ============================================================
    LOADING / ERROR
    ============================================================ */
 .loading-screen, .error-screen {
@@ -2185,6 +2327,8 @@ kbd {
   .item-list-filters { justify-content: flex-start; }
   .typing-input { font-size: 1rem; }
   .typing-ghost { font-size: 1rem; }
+  .progress-dot { width: 10px; height: 10px; }
+  .progress-dots { gap: 4px; }
 }
 
 /* ============================================================
